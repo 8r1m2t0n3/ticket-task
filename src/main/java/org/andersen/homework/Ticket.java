@@ -4,21 +4,25 @@ public class Ticket {
 
   private Short id;
 
+  private Float priceInUsd;
+
   private String concertHallName;
 
   private Short eventCode;
 
   private Boolean isPromo;
 
-  private Long creationUnixTimeInMs;
+  private final Long creationUnixTimeInMs;
 
   private Character stadiumSector;
 
   private Float backpackWeightInKg;
 
-  public Ticket(Short id, String concertHallName, Short eventCode, Boolean isPromo,
+  public Ticket(Short id, Float priceInUsd, String concertHallName, Short eventCode,
+      Boolean isPromo,
       Character stadiumSector, Float backpackWeightInKg) {
     this.id = id;
+    this.priceInUsd = priceInUsd;
     this.concertHallName = concertHallName;
     this.eventCode = eventCode;
     this.isPromo = isPromo;
@@ -33,48 +37,23 @@ public class Ticket {
     this.creationUnixTimeInMs = getCurrentUnixTime();
   }
 
+  public Ticket() {
+    this.creationUnixTimeInMs = getCurrentUnixTime();
+  }
+
   private Long getCurrentUnixTime() {
     return System.currentTimeMillis() / 1000L;
-  }
-
-  public Ticket() {}
-
-  public Short getId() {
-    return id;
-  }
-
-  public String getConcertHallName() {
-    return concertHallName;
-  }
-
-  public Short getEventCode() {
-    return eventCode;
-  }
-
-  public Boolean getPromo() {
-    return isPromo;
-  }
-
-  public Long getCreationUnixTime() {
-    return creationUnixTimeInMs;
-  }
-
-  public Character getStadiumSector() {
-    return stadiumSector;
-  }
-
-  public Float getBackpackWeightInKg() {
-    return backpackWeightInKg;
   }
 
   @Override
   public String toString() {
     return "Ticket{" +
         "id=" + id +
+        ", priceInUsd=" + priceInUsd +
         ", concertHallName='" + concertHallName + '\'' +
         ", eventCode=" + eventCode +
         ", isPromo=" + isPromo +
-        ", creationUnixTime=" + creationUnixTimeInMs +
+        ", creationUnixTimeInMs=" + creationUnixTimeInMs +
         ", stadiumSector=" + stadiumSector +
         ", backpackWeightInKg=" + backpackWeightInKg +
         '}';
