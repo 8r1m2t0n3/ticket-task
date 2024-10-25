@@ -12,13 +12,14 @@ public class TickerService {
     return new Ticket(concertHallName, eventCode);
   }
 
-  public static Ticket createFullTicket(Short id, String concertHallName, Short eventCode, Boolean isPromo,
+  public static Ticket createFullTicket(Short id, Float priceInUsd, String concertHallName, Short eventCode,
+      Boolean isPromo,
       Character stadiumSector, Float backpackWeightInKg) {
     idValidation(id);
     concertHallNameValidation(concertHallName);
     eventCodeValidation(eventCode);
     stadiumSectorValidation(stadiumSector);
-    return new Ticket(id, concertHallName, eventCode, isPromo, stadiumSector, backpackWeightInKg);
+    return new Ticket(id, priceInUsd, concertHallName, eventCode, isPromo, stadiumSector, backpackWeightInKg);
   }
 
   private static void idValidation(Short id) {
@@ -53,7 +54,8 @@ public class TickerService {
     Ticket limitedTicket = createLimitedTicket("0123456789", (short) 123);
     System.out.println(limitedTicket);
 
-    Ticket fullTicket = createFullTicket((short) 1234, "0123456789", (short) 123, Boolean.TRUE, 'B', 5.5526f);
+    Ticket fullTicket = createFullTicket((short) 1234, 3.95f, "0123456789", (short) 123, Boolean.TRUE, 'B',
+        5.5526f);
     System.out.println(fullTicket);
   }
 }
