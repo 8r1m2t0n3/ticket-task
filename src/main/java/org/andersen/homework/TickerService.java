@@ -12,7 +12,7 @@ public class TickerService {
     return new Ticket(concertHallName, eventCode);
   }
 
-  public static Ticket createFullTicket(Short id, float priceInUsd, String concertHallName, Short eventCode,
+  public static Ticket createFullTicket(Short id, Float priceInUsd, String concertHallName, Short eventCode,
       Boolean isPromo,
       Character stadiumSector, Float backpackWeightInKg) {
     idValidation(id);
