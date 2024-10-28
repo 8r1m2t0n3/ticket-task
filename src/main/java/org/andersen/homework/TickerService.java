@@ -2,10 +2,6 @@ package org.andersen.homework;
 
 public class TickerService {
 
-  public static Ticket createEmptyTicket() {
-    return new Ticket();
-  }
-
   public static Ticket createLimitedTicket(String concertHallName, Short eventCode) {
     concertHallNameValidation(concertHallName);
     eventCodeValidation(eventCode);
@@ -47,7 +43,7 @@ public class TickerService {
   }
 
   public static void main(String[] args) {
-    Ticket emptyTicket = createEmptyTicket();
+    Ticket emptyTicket = new Ticket();
     System.out.println(emptyTicket);
 
     Ticket limitedTicket = createLimitedTicket("0123456789", (short) 123);
