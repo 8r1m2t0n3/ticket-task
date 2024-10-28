@@ -31,7 +31,6 @@ public class TickerService {
   private static void stadiumSectorValidation(Character stadiumSector) {
     if (stadiumSector < 'A' || stadiumSector > 'C') {
       throw new IllegalArgumentException("Stadium Sector value is not 'A', 'B' or 'C'.");
-
     }
   }
 

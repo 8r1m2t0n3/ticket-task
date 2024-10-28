@@ -21,28 +21,22 @@ public class Ticket {
   public Ticket(Short id, Float priceInUsd, String concertHallName, Short eventCode,
       Boolean isPromo,
       Character stadiumSector, Float backpackWeightInKg) {
+    this(concertHallName, eventCode);
     this.id = id;
     this.priceInUsd = priceInUsd;
-    this.concertHallName = concertHallName;
-    this.eventCode = eventCode;
     this.isPromo = isPromo;
-    this.creationUnixTimeInMs = getCurrentUnixTime();
     this.stadiumSector = stadiumSector;
     this.backpackWeightInKg = backpackWeightInKg;
   }
 
   public Ticket(String concertHallName, Short eventCode) {
+    this();
     this.concertHallName = concertHallName;
     this.eventCode = eventCode;
-    this.creationUnixTimeInMs = getCurrentUnixTime();
   }
 
   public Ticket() {
-    this.creationUnixTimeInMs = getCurrentUnixTime();
-  }
-
-  private Long getCurrentUnixTime() {
-    return System.currentTimeMillis() / 1000L;
+    this.creationUnixTimeInMs = System.currentTimeMillis() / 1000L;
   }
 
   @Override
