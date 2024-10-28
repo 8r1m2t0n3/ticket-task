@@ -18,6 +18,10 @@ public class Ticket {
 
   private Float backpackWeightInKg;
 
+  public Short getId() {
+    return id;
+  }
+
   public Ticket(Short id, Float priceInUsd, String concertHallName, Short eventCode,
       Boolean isPromo,
       Character stadiumSector, Float backpackWeightInKg) {
