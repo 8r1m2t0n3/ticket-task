@@ -26,6 +26,10 @@ public class TickerService {
         backpackWeightInKg);
   }
 
+  public static Optional<Ticket> findById(Short id) {
+    return TICKETS_LIST.stream().filter(o -> o.getId().equals(id)).findFirst();
+  }
+
   private static void idValidation(Short id) {
     if (id > 9999) {
       throw new IllegalArgumentException("Id value consists of more than 4 digits.");
@@ -76,6 +80,8 @@ public class TickerService {
 
   public static void main(String[] args) {
     fillTicketsList();
+
+    findById((short) getRandomInt(0, 9)).ifPresent(System.out::println);
 
     Ticket emptyTicket = new Ticket();
     System.out.println(emptyTicket);
