@@ -2,6 +2,8 @@ package org.andersen.homework;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 public class TickerService {
@@ -51,8 +53,25 @@ public class TickerService {
   private static void fillTicketsList() {
     IntStream.range(0, 10)
         .forEach(
-            n -> TICKETS_LIST.add(createFullTicket((short) n, 5.0f, "center", (short) 287,
-                Boolean.TRUE, 'A', 10.0f)));
+            n -> TICKETS_LIST.add(
+                createFullTicket(
+                    (short) n,
+                    ((float) getRandomInt(10, 1000)) / 100,
+                    getRandomString(getRandomInt(1, 10)),
+                    (short) getRandomInt(0, 999),
+                    getRandomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE,
+                    (char) (getRandomInt(0, 2) + 'A'),
+                    ((float) getRandomInt(10, 1000)) / 100)));
+  }
+
+  private static String getRandomString(int length) {
+    StringBuilder stringBuilder = new StringBuilder();
+    IntStream.range(0, length).forEach(n -> stringBuilder.append(getRandomInt(0, 9)));
+    return stringBuilder.toString();
+  }
+
+  private static int getRandomInt(int min, int max) {
+    return ThreadLocalRandom.current().nextInt(min, max + 1);
   }
 
   public static void main(String[] args) {
