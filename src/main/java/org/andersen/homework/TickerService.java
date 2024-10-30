@@ -1,7 +1,12 @@
 package org.andersen.homework;
 
-public class TickerService {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
 
+public class TickerService {
+  private final static List<Ticket> TICKETS_LIST = new ArrayList<>();
   public static Ticket createLimitedTicket(String concertHallName, Short eventCode) {
     concertHallNameValidation(concertHallName);
     eventCodeValidation(eventCode);
@@ -41,6 +46,29 @@ public class TickerService {
       throw new IllegalArgumentException("Event Code consists of more than 3 digits.");
     }
   }
+  private static void fillTicketsList() {
+    IntStream.range(0, 10)
+            .forEach(
+                    n -> TICKETS_LIST.add(
+                            createFullTicket(
+                                    (short) n,
+                                    ((float) getRandomInt(10, 1000)) / 100,
+                                    getRandomString(getRandomInt(1, 10)),
+                                    (short) getRandomInt(0, 999),
+                                    getRandomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE,
+                                    (char) (getRandomInt(0, 2) + 'A'),
+                                    ((float) getRandomInt(10, 1000)) / 100)));
+  }
+
+  private static String getRandomString(int length) {
+    StringBuilder stringBuilder = new StringBuilder();
+    IntStream.range(0, length).forEach(n -> stringBuilder.append(getRandomInt(0, 9)));
+    return stringBuilder.toString();
+  }
+
+  private static int getRandomInt(int min, int max) {
+    return ThreadLocalRandom.current().nextInt(min, max + 1);
+  }
 
   public static void main(String[] args) {
     Ticket emptyTicket = new Ticket();
@@ -52,5 +80,7 @@ public class TickerService {
     Ticket fullTicket = createFullTicket((short) 1234, 3.95f, "0123456789", (short) 123, Boolean.TRUE, 'B',
         5.5526f);
     System.out.println(fullTicket);
+
+    fillTicketsList();
   }
 }
