@@ -17,6 +17,7 @@ public class Ticket {
   private Character stadiumSector;
 
   private Float backpackWeightInKg;
+  public Character getStadiumSector(){ return stadiumSector ;}
 
   public Ticket(Short id, Float priceInUsd, String concertHallName, Short eventCode,
       Boolean isPromo,
