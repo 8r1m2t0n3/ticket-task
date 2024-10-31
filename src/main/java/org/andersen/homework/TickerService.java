@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
 
 public class TickerService {
     private final static List<Ticket> TICKETS_LIST = new ArrayList<>();
+
     public static List<Ticket> findByStadiumSector(Character stadiumSector) {
         return TICKETS_LIST.stream()
                 .filter(o -> o.getStadiumSector().equals(stadiumSector))
