@@ -1,5 +1,9 @@
 package org.andersen.homework;
 
+import org.andersen.homework.model.Ticket;
+import org.andersen.homework.service.TickerService;
+import org.andersen.homework.util.Randomizer;
+
 public class MainClass {
 
   private final static TickerService TICKER_SERVICE = new TickerService();

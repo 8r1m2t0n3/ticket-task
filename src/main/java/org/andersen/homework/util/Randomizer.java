@@ -1,4 +1,4 @@
-package org.andersen.homework;
+package org.andersen.homework.util;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;

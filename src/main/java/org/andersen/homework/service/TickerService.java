@@ -1,10 +1,12 @@
-package org.andersen.homework;
+package org.andersen.homework.service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.andersen.homework.util.Randomizer;
+import org.andersen.homework.model.Ticket;
 
 public class TickerService {
 

@@ -1,4 +1,4 @@
-package org.andersen.homework;
+package org.andersen.homework.model;
 
 public class Ticket {
 
