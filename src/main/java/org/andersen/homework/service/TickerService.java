@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.andersen.homework.util.Randomizer;
 import org.andersen.homework.model.Ticket;
+import org.andersen.homework.util.Randomizer;
 
 public class TickerService {
 
-  private final List<Ticket> TICKETS_LIST = new ArrayList<>();
+  private final List<Ticket> ticketList = new ArrayList<>();
 
   public Ticket createLimitedTicket(String concertHallName, Short eventCode) {
     concertHallNameValidation(concertHallName);
@@ -29,11 +29,11 @@ public class TickerService {
   }
 
   public Optional<Ticket> findById(Short id) {
-    return TICKETS_LIST.stream().filter(o -> o.getId().equals(id)).findFirst();
+    return ticketList.stream().filter(o -> o.getId().equals(id)).findFirst();
   }
 
   public List<Ticket> findByStadiumSector(Character stadiumSector) {
-    return TICKETS_LIST.stream()
+    return ticketList.stream()
         .filter(o -> o.getStadiumSector().equals(stadiumSector))
         .collect(Collectors.toList());
   }
@@ -41,7 +41,7 @@ public class TickerService {
   public void fillTicketsList() {
     IntStream.range(0, 10)
         .forEach(
-            n -> TICKETS_LIST.add(
+            n -> ticketList.add(
                 createFullTicket(
                     (short) n,
                     ((float) Randomizer.getRandomInt(10, 1000)) / 100,
