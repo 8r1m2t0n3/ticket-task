@@ -42,6 +42,10 @@ public class Ticket {
     return id;
   }
 
+  public Character getStadiumSector() {
+    return stadiumSector;
+  }
+
   @Override
   public String toString() {
     return "Ticket{" +
