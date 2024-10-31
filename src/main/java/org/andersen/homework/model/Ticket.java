@@ -1,4 +1,4 @@
-package org.andersen.homework;
+package org.andersen.homework.model;
 
 public class Ticket {
 
@@ -18,15 +18,8 @@ public class Ticket {
 
   private Float backpackWeightInKg;
 
-  public Ticket(Short id, Float priceInUsd, String concertHallName, Short eventCode,
-      Boolean isPromo,
-      Character stadiumSector, Float backpackWeightInKg) {
-    this(concertHallName, eventCode);
-    this.id = id;
-    this.priceInUsd = priceInUsd;
-    this.isPromo = isPromo;
-    this.stadiumSector = stadiumSector;
-    this.backpackWeightInKg = backpackWeightInKg;
+  public Ticket() {
+    this.creationUnixTimeInMs = System.currentTimeMillis() / 1000L;
   }
 
   public Ticket(String concertHallName, Short eventCode) {
@@ -35,8 +28,22 @@ public class Ticket {
     this.eventCode = eventCode;
   }
 
-  public Ticket() {
-    this.creationUnixTimeInMs = System.currentTimeMillis() / 1000L;
+  public Ticket(Short id, Float priceInUsd, String concertHallName, Short eventCode,
+      Boolean isPromo, Character stadiumSector, Float backpackWeightInKg) {
+    this(concertHallName, eventCode);
+    this.id = id;
+    this.priceInUsd = priceInUsd;
+    this.isPromo = isPromo;
+    this.stadiumSector = stadiumSector;
+    this.backpackWeightInKg = backpackWeightInKg;
+  }
+
+  public Short getId() {
+    return id;
+  }
+
+  public Character getStadiumSector() {
+    return stadiumSector;
   }
 
   @Override
