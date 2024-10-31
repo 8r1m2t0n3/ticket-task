@@ -2,42 +2,45 @@ package org.andersen.homework;
 
 public class Ticket {
 
-    private Short id;
+  private Short id;
 
-    private Float priceInUsd;
+  private Float priceInUsd;
 
-    private String concertHallName;
+  private String concertHallName;
 
-    private Short eventCode;
+  private Short eventCode;
 
-    private Boolean isPromo;
+  private Boolean isPromo;
 
-    private final Long creationUnixTimeInMs;
+  private final Long creationUnixTimeInMs;
 
-    private Character stadiumSector;
+  private Character stadiumSector;
 
-    private Float backpackWeightInKg;
+  private Float backpackWeightInKg;
 
-    public Ticket(Short id, Float priceInUsd, String concertHallName, Short eventCode,
-                  Boolean isPromo,
-                  Character stadiumSector, Float backpackWeightInKg) {
-        this(concertHallName, eventCode);
-        this.id = id;
-        this.priceInUsd = priceInUsd;
-        this.isPromo = isPromo;
-        this.stadiumSector = stadiumSector;
-        this.backpackWeightInKg = backpackWeightInKg;
-    }
+  public Ticket() {
+    this.creationUnixTimeInMs = System.currentTimeMillis() / 1000L;
+  }
 
-    public Ticket(String concertHallName, Short eventCode) {
-        this();
-        this.concertHallName = concertHallName;
-        this.eventCode = eventCode;
-    }
+  public Ticket(String concertHallName, Short eventCode) {
+    this();
+    this.concertHallName = concertHallName;
+    this.eventCode = eventCode;
+  }
 
-    public Ticket() {
-        this.creationUnixTimeInMs = System.currentTimeMillis() / 1000L;
-    }
+  public Ticket(Short id, Float priceInUsd, String concertHallName, Short eventCode,
+      Boolean isPromo, Character stadiumSector, Float backpackWeightInKg) {
+    this(concertHallName, eventCode);
+    this.id = id;
+    this.priceInUsd = priceInUsd;
+    this.isPromo = isPromo;
+    this.stadiumSector = stadiumSector;
+    this.backpackWeightInKg = backpackWeightInKg;
+  }
+
+  public Short getId() {
+    return id;
+  }
 
     public Character getStadiumSector() {
         return stadiumSector;
