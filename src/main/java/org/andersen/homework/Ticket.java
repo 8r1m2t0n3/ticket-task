@@ -42,21 +42,21 @@ public class Ticket {
     return id;
   }
 
-    public Character getStadiumSector() {
-        return stadiumSector;
-    }
+  public Character getStadiumSector() {
+    return stadiumSector;
+  }
 
-    @Override
-    public String toString() {
-        return "Ticket{" +
-                "id=" + id +
-                ", priceInUsd=" + priceInUsd +
-                ", concertHallName='" + concertHallName + '\'' +
-                ", eventCode=" + eventCode +
-                ", isPromo=" + isPromo +
-                ", creationUnixTimeInMs=" + creationUnixTimeInMs +
-                ", stadiumSector=" + stadiumSector +
-                ", backpackWeightInKg=" + backpackWeightInKg +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "Ticket{" +
+        "id=" + id +
+        ", priceInUsd=" + priceInUsd +
+        ", concertHallName='" + concertHallName + '\'' +
+        ", eventCode=" + eventCode +
+        ", isPromo=" + isPromo +
+        ", creationUnixTimeInMs=" + creationUnixTimeInMs +
+        ", stadiumSector=" + stadiumSector +
+        ", backpackWeightInKg=" + backpackWeightInKg +
+        '}';
+  }
 }

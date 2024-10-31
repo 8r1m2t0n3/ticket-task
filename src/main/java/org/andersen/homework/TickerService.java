@@ -2,24 +2,20 @@ package org.andersen.homework;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.IntStream;
-
 public class TickerService {
-    private final static List<Ticket> TICKETS_LIST = new ArrayList<>();
 
-    public static List<Ticket> findByStadiumSector(Character stadiumSector) {
-        return TICKETS_LIST.stream()
-                .filter(o -> o.getStadiumSector().equals(stadiumSector))
-                .collect(Collectors.toList());
-    }
+  private final static List<Ticket> TICKETS_LIST = new ArrayList<>();
+
+  public static List<Ticket> findByStadiumSector(Character stadiumSector) {
+    return TICKETS_LIST.stream()
+        .filter(o -> o.getStadiumSector().equals(stadiumSector))
+        .collect(Collectors.toList());
+  }
 
   public static Ticket createLimitedTicket(String concertHallName, Short eventCode) {
     concertHallNameValidation(concertHallName);
@@ -93,6 +89,7 @@ public class TickerService {
     fillTicketsList();
 
     findById((short) getRandomInt(0, 9)).ifPresent(System.out::println);
+    System.out.println(findByStadiumSector(((char) (getRandomInt(0, 2) + 'A'))).stream().toList());
 
     Ticket emptyTicket = new Ticket();
     System.out.println(emptyTicket);
