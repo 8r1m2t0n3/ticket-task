@@ -29,10 +29,6 @@ public class TickerService {
         .collect(Collectors.toList());
   }
 
-  public List<Ticket> getAll() {
-    return ticketList;
-  }
-
   private void fillTicketsList() {
     IntStream.range(0, 10)
         .forEach(n -> {
