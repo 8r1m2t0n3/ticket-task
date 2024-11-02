@@ -1,5 +1,6 @@
 package org.andersen.homework.model;
 
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,14 +20,14 @@ public class Ticket {
 
   private Boolean isPromo;
 
-  private final Long creationUnixTimeInMs;
+  private LocalDateTime time;
 
   private Character stadiumSector;
 
   private Float backpackWeightInKg;
 
   public Ticket() {
-    this.creationUnixTimeInMs = System.currentTimeMillis() / 1000L;
+    this.time = LocalDateTime.now();
   }
 
   public Ticket(String concertHallName, Short eventCode) {
