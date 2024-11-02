@@ -1,5 +1,12 @@
 package org.andersen.homework.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
 public class Ticket {
 
   private Short id;
@@ -36,27 +43,5 @@ public class Ticket {
     this.isPromo = isPromo;
     this.stadiumSector = stadiumSector;
     this.backpackWeightInKg = backpackWeightInKg;
-  }
-
-  public Short getId() {
-    return id;
-  }
-
-  public Character getStadiumSector() {
-    return stadiumSector;
-  }
-
-  @Override
-  public String toString() {
-    return "Ticket{" +
-        "id=" + id +
-        ", priceInUsd=" + priceInUsd +
-        ", concertHallName='" + concertHallName + '\'' +
-        ", eventCode=" + eventCode +
-        ", isPromo=" + isPromo +
-        ", creationUnixTimeInMs=" + creationUnixTimeInMs +
-        ", stadiumSector=" + stadiumSector +
-        ", backpackWeightInKg=" + backpackWeightInKg +
-        '}';
   }
 }
