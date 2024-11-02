@@ -1,30 +1,40 @@
 package org.andersen.homework;
 
-import org.andersen.homework.model.Ticket;
+import java.time.LocalDateTime;
+import org.andersen.homework.model.entity.Ticket;
+import org.andersen.homework.model.enums.StadiumSector;
 import org.andersen.homework.service.TickerService;
-import org.andersen.homework.util.Randomizer;
+import org.andersen.homework.util.RandomizerUtil;
+import org.andersen.homework.util.ValidationUtil;
 
 public class MainClass {
 
   private final static TickerService TICKER_SERVICE = new TickerService();
 
   public static void main(String[] args) {
-    TICKER_SERVICE.fillTicketsList();
+    System.out.print("Found by id: ");
+    TICKER_SERVICE.findById((short) RandomizerUtil.getRandomInt(0, 9))
+        .ifPresent(System.out::println);
 
-    TICKER_SERVICE.findById((short) Randomizer.getRandomInt(0, 9)).ifPresent(System.out::println);
-    System.out.println(
-        TICKER_SERVICE.findByStadiumSector(((char) (Randomizer.getRandomInt(0, 2) + 'A'))).stream()
+    System.out.println("Found by stadium sector: " +
+        TICKER_SERVICE.findByStadiumSector((RandomizerUtil.getRandomFromEnum(StadiumSector.class)))
+            .stream()
             .toList());
 
     Ticket emptyTicket = new Ticket();
-    System.out.println(emptyTicket);
+    System.out.println("Empty Ticket: " + emptyTicket);
 
-    Ticket limitedTicket = TICKER_SERVICE.createLimitedTicket("0123456789", (short) 123);
-    System.out.println(limitedTicket);
+    Ticket limitedTicket = Ticket.builder()
+        .concertHallName(RandomizerUtil.getRandomString(RandomizerUtil.getRandomInt(0, 10)))
+        .eventCode((short) RandomizerUtil.getRandomInt(0, 999))
+        .build();
+    ValidationUtil.validate(limitedTicket);
+    System.out.println("Limited Ticket: " + limitedTicket);
 
-    Ticket fullTicket = TICKER_SERVICE.createFullTicket((short) 1234, 3.95f, "0123456789",
-        (short) 123,
-        Boolean.TRUE, 'B', 5.5526f);
-    System.out.println(fullTicket);
+    Ticket fullTicket = new Ticket((short) 123, 3.95f, "0123456789", (short) 123,
+        Boolean.TRUE, LocalDateTime.now(), RandomizerUtil.getRandomFromEnum(StadiumSector.class),
+        5.5526f);
+    ValidationUtil.validate(fullTicket);
+    System.out.println("Full Ticket: " + fullTicket);
   }
 }
