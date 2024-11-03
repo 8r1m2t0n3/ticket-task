@@ -58,11 +58,11 @@ public class Ticket {
   }
 
   public void share(String phoneNumber) {
-    System.out.println("Ticket was shared by phone");
+    System.out.println("Ticket was shared by phone: " + phoneNumber + ".");
   }
 
   public void share(String phoneNumber, String email) {
-    System.out.println("Ticket was shared by phone and email");
+    System.out.println("Ticket was shared by phone: " + phoneNumber + " and email: " + email + ".");
   }
 
   @Override
