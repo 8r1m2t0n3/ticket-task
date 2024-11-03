@@ -2,6 +2,10 @@ package org.andersen.homework.model.entity;
 
 public class Admin extends User {
 
+  public Admin(Short id) {
+    super(id);
+  }
+
   @Override
   public void printRole() {
     System.out.println("Admin");

@@ -2,6 +2,10 @@ package org.andersen.homework.model.entity;
 
 public class Client extends User {
 
+  public Client(Short id) {
+    super(id);
+  }
+
   @Override
   public void printRole() {
     System.out.println("Client");
