@@ -1,22 +1,19 @@
 package org.andersen.homework.model.entity;
 
+import org.andersen.homework.model.enums.UserRole;
+
 public class Admin extends User {
 
   public Admin(Short id) {
-    super(id);
+    super(id, UserRole.ADMIN);
+  }
+
+  public void checkTicket(Ticket ticket) {
+    System.out.println("Ticket checked: " + ticket);
   }
 
   @Override
-  public void printRole() {
-    System.out.println("Admin");
-  }
-
-  @Override
-  public void print() {
-    System.out.println("I am an Admin");
-  }
-
-  public void checkTicket() {
-    System.out.println("Ticket checked");
+  public void sayHi() {
+    System.out.println("Hi! I am Admin");
   }
 }

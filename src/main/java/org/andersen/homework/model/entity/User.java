@@ -3,17 +3,17 @@ package org.andersen.homework.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import org.andersen.homework.model.enums.UserRole;
 
 @Getter
-@Setter
+@ToString
 @AllArgsConstructor
 public abstract class User {
 
-  private final Short id;
+  @Setter
+  private Short id;
+  private UserRole role;
 
-  public abstract void printRole();
-
-  public void print() {
-    System.out.println("I am a User");
-  }
+  public abstract void sayHi();
 }
