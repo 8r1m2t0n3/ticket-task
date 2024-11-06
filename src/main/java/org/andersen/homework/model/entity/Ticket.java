@@ -5,39 +5,56 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.andersen.homework.annotation.NullableWarning;
 import org.andersen.homework.model.enums.StadiumSector;
 
 @Getter
 @Setter
 @ToString
-@Builder
-@NoArgsConstructor
+@EqualsAndHashCode
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Ticket {
 
   @Max(999)
   @Min(0)
-  private Short id;
+  @NullableWarning
+  private final Short id;
 
-  private Float priceInUsd;
+  @NullableWarning
+  private final Float priceInUsd;
 
   @Size(max = 10)
-  private String concertHallName;
+  @NullableWarning
+  private final String concertHallName;
 
   @Max(999)
   @Min(0)
-  private Short eventCode;
+  @NullableWarning
+  private final Short eventCode;
 
-  private Boolean isPromo;
+  @NullableWarning
+  private final Boolean isPromo;
 
+  @NullableWarning
+  private final Float backpackWeightInKg;
+
+  @NullableWarning
   private LocalDateTime time;
 
+  @NullableWarning
   private StadiumSector stadiumSector;
 
-  private Float backpackWeightInKg;
+  public void share(String phoneNumber) {
+    System.out.println("Ticket was shared by phone: " + phoneNumber + ".");
+  }
+
+  public void share(String phoneNumber, String email) {
+    System.out.println("Ticket was shared by phone: " + phoneNumber + " and email: " + email + ".");
+  }
 }
