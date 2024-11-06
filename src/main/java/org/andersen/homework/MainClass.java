@@ -56,8 +56,8 @@ public class MainClass {
   private static void printUsers() {
     Client client = new Client((short) RandomizerUtil.getRandomInt(0, 999));
     client.setTicket(TickerService.getRandomTicket());
-    client.sayHi();
     System.out.println("Client: " + client);
+    client.sayHi();
 
     System.out.println();
 
