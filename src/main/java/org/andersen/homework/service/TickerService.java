@@ -9,9 +9,11 @@ import java.util.stream.IntStream;
 import org.andersen.homework.model.entity.Ticket;
 import org.andersen.homework.model.enums.StadiumSector;
 import org.andersen.homework.util.RandomizerUtil;
-import org.andersen.homework.util.ValidationUtil;
+import org.andersen.homework.util.ValidationManager;
 
 public class TickerService {
+
+  private static final ValidationManager VALIDATION_MANAGER = new ValidationManager();
 
   private final List<Ticket> ticketList = new ArrayList<>();
 
@@ -39,7 +41,7 @@ public class TickerService {
         ((float) RandomizerUtil.getRandomInt(10, 1000)) / 100,
         LocalDateTime.now(),
         RandomizerUtil.getRandomFromEnum(StadiumSector.class));
-    ValidationUtil.validate(ticket);
+    VALIDATION_MANAGER.validate(ticket);
     return ticket;
   }
 
@@ -47,7 +49,7 @@ public class TickerService {
     IntStream.range(0, 10)
         .forEach(n -> {
           Ticket ticket = getRandomTicket();
-          ValidationUtil.validate(ticket);
+          VALIDATION_MANAGER.validate(ticket);
           ticketList.add(ticket);
         });
   }
