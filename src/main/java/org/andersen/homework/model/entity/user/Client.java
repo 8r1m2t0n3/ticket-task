@@ -15,8 +15,8 @@ public class Client extends User {
 
   private Ticket ticket;
 
-  public Client(Short id) {
-    super(id, UserRole.CLIENT);
+  public Client() {
+    super(UserRole.CLIENT);
   }
 
   @Override

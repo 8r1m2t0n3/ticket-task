@@ -9,8 +9,8 @@ import org.andersen.homework.model.enums.UserRole;
 @EqualsAndHashCode(callSuper = true)
 public class Admin extends User {
 
-  public Admin(Short id) {
-    super(id, UserRole.ADMIN);
+  public Admin() {
+    super(UserRole.ADMIN);
   }
 
   public void checkTicket(Ticket ticket) {

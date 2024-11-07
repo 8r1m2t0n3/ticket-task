@@ -1,9 +1,9 @@
 package org.andersen.homework.model.entity.user;
 
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import org.andersen.homework.model.enums.UserRole;
 
@@ -13,9 +13,8 @@ import org.andersen.homework.model.enums.UserRole;
 @AllArgsConstructor
 public abstract class User {
 
-  @Setter
-  private Short id;
-  private UserRole role;
+  private final UUID id = UUID.randomUUID();
+  private final UserRole role;
 
   public abstract void sayHi();
 }
