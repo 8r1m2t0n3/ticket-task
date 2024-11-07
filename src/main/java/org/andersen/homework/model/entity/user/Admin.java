@@ -1,7 +1,10 @@
-package org.andersen.homework.model.entity;
+package org.andersen.homework.model.entity.user;
 
+import lombok.ToString;
+import org.andersen.homework.model.entity.ticket.Ticket;
 import org.andersen.homework.model.enums.UserRole;
 
+@ToString(callSuper = true)
 public class Admin extends User {
 
   public Admin(Short id) {

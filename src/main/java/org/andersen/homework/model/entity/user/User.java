@@ -1,4 +1,4 @@
-package org.andersen.homework.model.entity;
+package org.andersen.homework.model.entity.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

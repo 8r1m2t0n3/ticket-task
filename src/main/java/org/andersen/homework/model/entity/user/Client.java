@@ -1,0 +1,27 @@
+package org.andersen.homework.model.entity.user;
+
+import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.andersen.homework.model.entity.ticket.Ticket;
+import org.andersen.homework.model.enums.UserRole;
+
+@Getter
+@Setter
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class Client extends User {
+
+  private Ticket ticket;
+
+  public Client(Short id) {
+    super(id, UserRole.CLIENT);
+  }
+
+  @Override
+  public void sayHi() {
+    System.out.println("Hi! I am User");
+  }
+}
