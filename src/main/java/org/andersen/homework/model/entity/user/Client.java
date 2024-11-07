@@ -1,6 +1,5 @@
 package org.andersen.homework.model.entity.user;
 
-import java.util.Objects;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
