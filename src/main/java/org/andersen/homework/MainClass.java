@@ -1,69 +1,78 @@
 package org.andersen.homework;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.stream.IntStream;
-import org.andersen.homework.model.entity.Admin;
-import org.andersen.homework.model.entity.Client;
-import org.andersen.homework.model.entity.Ticket;
-import org.andersen.homework.model.enums.StadiumSector;
-import org.andersen.homework.service.TickerService;
-import org.andersen.homework.util.RandomizerUtil;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.andersen.homework.exception.bus_ticket.BusTicketPriceIsNullException;
+import org.andersen.homework.exception.bus_ticket.BusTicketPriceNotEvenException;
+import org.andersen.homework.exception.bus_ticket.BusTicketStartDateIsInFutureException;
+import org.andersen.homework.exception.bus_ticket.BusTicketStartDateIsNullWhenTicketTypeIsDayWeekOrYearException;
+import org.andersen.homework.exception.bus_ticket.UndefinedBusTicketTypeException;
+import org.andersen.homework.model.entity.ticket.BusTicket;
+import org.andersen.homework.util.BusTicketFileReader;
 import org.andersen.homework.util.ValidationManager;
 
 public class MainClass {
 
-  private final static TickerService TICKER_SERVICE = new TickerService();
   private final static ValidationManager VALIDATION_MANAGER = new ValidationManager();
 
+  private static Path getPathToResource(String resourceFileName) throws URISyntaxException {
+    ClassLoader classLoader = MainClass.class.getClassLoader();
+    return Paths.get(classLoader.getResource(resourceFileName).toURI());
+  }
+
+  private static List<BusTicket> getBusTicketsListFromFile(String file) {
+    Path filePath = null;
+    try {
+      filePath = getPathToResource(file);
+    } catch (URISyntaxException e) {
+      System.out.println(e.getMessage());
+    }
+    assert filePath != null;
+    return BusTicketFileReader.readTicketsFromFile(
+        filePath.toAbsolutePath().toString());
+  }
+
   public static void main(String[] args) {
-    printTickets();
-    System.out.println("\n******************************************\n");
-    printUsers();
-  }
+    List<BusTicket> busTickets = getBusTicketsListFromFile("bus_tickets.json");
 
-  private static void printTickets() {
-    System.out.print("Found by id: ");
-    IntStream.range(0, 999)
-        .mapToObj(i -> TICKER_SERVICE.findById((short) i))
-        .filter(Optional::isPresent)
-        .map(Optional::get)
-        .findFirst()
-        .ifPresent(System.out::println);
+    AtomicInteger startDateViolationsCount = new AtomicInteger();
+    AtomicInteger priceViolationsCount = new AtomicInteger();
+    AtomicInteger ticketTypeViolationsCount = new AtomicInteger();
 
-    System.out.println("Found by stadium sector: " +
-        TICKER_SERVICE.findByStadiumSector((RandomizerUtil.getRandomFromEnum(StadiumSector.class)))
-            .stream()
-            .toList());
+    AtomicInteger invalidTicketsCounter = new AtomicInteger();
 
-    Ticket limitedTicket = new Ticket((short) 123, 3.95f, "0123456789", (short) 123,
-        Boolean.TRUE, 5.5526f);
-    VALIDATION_MANAGER.validate(limitedTicket);
-    System.out.println("Limited Ticket: " + limitedTicket);
+    busTickets.forEach(o -> {
+      try {
+        VALIDATION_MANAGER.validateBusTicket(o);
+      } catch (UndefinedBusTicketTypeException e) {
+        ticketTypeViolationsCount.getAndIncrement();
+        invalidTicketsCounter.getAndIncrement();
+      } catch (BusTicketStartDateIsInFutureException |
+               BusTicketStartDateIsNullWhenTicketTypeIsDayWeekOrYearException e) {
+        startDateViolationsCount.getAndIncrement();
+        invalidTicketsCounter.getAndIncrement();
+      } catch (BusTicketPriceIsNullException | BusTicketPriceNotEvenException e) {
+        priceViolationsCount.getAndIncrement();
+        invalidTicketsCounter.getAndIncrement();
+      }
+    });
 
-    Ticket fullTicket = new Ticket((short) 123, 3.95f, "0123456789", (short) 123,
-        Boolean.TRUE, 5.5526f, LocalDateTime.now(),
-        RandomizerUtil.getRandomFromEnum(StadiumSector.class));
-    VALIDATION_MANAGER.validate(fullTicket);
-    System.out.println("Full Ticket: " + fullTicket);
+    System.out.println("Total = " + busTickets.size());
+    System.out.println("Valid = " + (busTickets.size() - invalidTicketsCounter.intValue()));
 
-    System.out.println();
+    int max = Math.max(
+        Math.max(startDateViolationsCount.intValue(), priceViolationsCount.intValue()),
+        ticketTypeViolationsCount.intValue());
 
-    fullTicket.share("19374682");
-    fullTicket.share("18364529", "email@mail.com");
-  }
-
-  private static void printUsers() {
-    Client client = new Client((short) RandomizerUtil.getRandomInt(0, 999));
-    client.setTicket(TickerService.getRandomTicket());
-    System.out.println("Client: " + client);
-    client.sayHi();
-
-    System.out.println();
-
-    Admin admin = new Admin((short) RandomizerUtil.getRandomInt(0, 999));
-    System.out.println("Admin: " + admin);
-    admin.sayHi();
-    admin.checkTicket(client.getTicket());
+    if (max == startDateViolationsCount.intValue()) {
+      System.out.println("Most popular violation = 'start date'");
+    } else if (max == priceViolationsCount.intValue()) {
+      System.out.println("Most popular violation = 'price'");
+    } else {
+      System.out.println("Most popular violation = 'ticket type");
+    }
   }
 }
