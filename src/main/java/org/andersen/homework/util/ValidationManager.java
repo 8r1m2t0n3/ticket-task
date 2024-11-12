@@ -52,7 +52,9 @@ public class ValidationManager {
     }
   }
 
-  public void validateBusTicket(BusTicket busTicket) {
+  public void validateBusTicket(BusTicket busTicket) throws BusTicketPriceIsNullException,
+      UndefinedBusTicketTypeException, BusTicketStartDateIsNullWhenTicketTypeIsDayWeekOrYearException,
+      BusTicketStartDateIsInFutureException, BusTicketPriceNotEvenException {
     if (busTicket.getType() != null) {
       if (!Arrays.stream(BusTicketType.values())
           .map(BusTicketType::name).toList().contains(busTicket.getType())) {
