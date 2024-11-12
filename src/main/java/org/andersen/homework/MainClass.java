@@ -4,6 +4,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.andersen.homework.exception.bus_ticket.BusTicketPriceIsNullException;
 import org.andersen.homework.exception.bus_ticket.BusTicketPriceNotEvenException;
@@ -17,26 +18,27 @@ import org.andersen.homework.util.ValidationManager;
 public class MainClass {
 
   private final static ValidationManager VALIDATION_MANAGER = new ValidationManager();
+  private final static String BUS_TICKETS_FILE = "bus_tickets.json";
 
   private static Path getPathToResource(String resourceFileName) throws URISyntaxException {
     ClassLoader classLoader = MainClass.class.getClassLoader();
-    return Paths.get(classLoader.getResource(resourceFileName).toURI());
+    return Paths.get(Objects.requireNonNull(classLoader.getResource(resourceFileName)).toURI());
   }
 
   private static List<BusTicket> getBusTicketsListFromFile(String file) {
-    Path filePath = null;
+    Path filePath;
     try {
       filePath = getPathToResource(file);
     } catch (URISyntaxException e) {
       System.out.println(e.getMessage());
+      return List.of();
     }
-    assert filePath != null;
     return BusTicketFileReader.readTicketsFromFile(
         filePath.toAbsolutePath().toString());
   }
 
   public static void main(String[] args) {
-    List<BusTicket> busTickets = getBusTicketsListFromFile("bus_tickets.json");
+    List<BusTicket> busTickets = getBusTicketsListFromFile(BUS_TICKETS_FILE);
 
     AtomicInteger startDateViolationsCount = new AtomicInteger();
     AtomicInteger priceViolationsCount = new AtomicInteger();
