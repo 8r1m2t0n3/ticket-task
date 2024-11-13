@@ -3,9 +3,9 @@ package org.andersen.homework;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.IntStream;
-import org.andersen.homework.model.entity.Admin;
-import org.andersen.homework.model.entity.Client;
 import org.andersen.homework.model.entity.Ticket;
+import org.andersen.homework.model.entity.user.Admin;
+import org.andersen.homework.model.entity.user.Client;
 import org.andersen.homework.model.enums.StadiumSector;
 import org.andersen.homework.service.TickerService;
 import org.andersen.homework.util.RandomizerUtil;
@@ -54,14 +54,14 @@ public class MainClass {
   }
 
   private static void printUsers() {
-    Client client = new Client((short) RandomizerUtil.getRandomInt(0, 999));
+    Client client = new Client();
     client.setTicket(TickerService.getRandomTicket());
     System.out.println("Client: " + client);
     client.sayHi();
 
     System.out.println();
 
-    Admin admin = new Admin((short) RandomizerUtil.getRandomInt(0, 999));
+    Admin admin = new Admin();
     System.out.println("Admin: " + admin);
     admin.sayHi();
     admin.checkTicket(client.getTicket());
