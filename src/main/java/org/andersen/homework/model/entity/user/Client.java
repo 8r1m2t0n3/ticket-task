@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.andersen.homework.model.entity.ticket.Ticket;
+import org.andersen.homework.model.entity.Ticket;
 import org.andersen.homework.model.enums.UserRole;
 
 @Getter
