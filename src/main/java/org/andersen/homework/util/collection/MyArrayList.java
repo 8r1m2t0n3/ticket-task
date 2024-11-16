@@ -2,6 +2,7 @@ package org.andersen.homework.util.collection;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class MyArrayList<E> {
@@ -72,15 +73,8 @@ public class MyArrayList<E> {
 
   @Override
   public String toString() {
-    StringBuilder buffer = new StringBuilder();
-    buffer.append("[");
-    for (int i = 0; i < entriesCount; i++) {
-      buffer.append(array[i]);
-      if (i != entriesCount - 1) {
-        buffer.append(", ");
-      }
-    }
-    buffer.append("]");
-    return buffer.toString();
+    return Arrays.stream(array)
+        .limit(entriesCount).map(Object::toString)
+        .collect(Collectors.joining(", ", "[", "]"));
   }
 }
