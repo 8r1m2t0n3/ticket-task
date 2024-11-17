@@ -13,7 +13,7 @@ public class MyArrayList<E> {
 
   private int capacity;
 
-  private int entriesCount = 0;
+  private int elementsCount = 0;
 
   public MyArrayList() {
     this.array = DEFAULT_EMPTY_CAPACITY_ARRAY;
@@ -34,47 +34,47 @@ public class MyArrayList<E> {
 
   @SuppressWarnings("unchecked")
   public E get(int index) {
-    Objects.checkIndex(index, entriesCount);
-    if (index > entriesCount - 1) {
+    Objects.checkIndex(index, elementsCount);
+    if (index > elementsCount - 1) {
       return null;
     }
     return (E) array[index];
   }
 
   public void add(E element) {
-    if (entriesCount == capacity) {
-      array = Arrays.copyOf(array, entriesCount + 1);
+    if (elementsCount == capacity) {
+      array = Arrays.copyOf(array, elementsCount + 1);
       capacity++;
     }
-    array[entriesCount] = element;
-    entriesCount++;
+    array[elementsCount] = element;
+    elementsCount++;
   }
 
   public E remove(int index) {
-    Objects.checkIndex(index, entriesCount);
+    Objects.checkIndex(index, elementsCount);
     @SuppressWarnings("unchecked") E deletedElement = (E) array[index];
     if (index != capacity) {
-      IntStream.range(index, entriesCount - 1)
+      IntStream.range(index, elementsCount - 1)
           .forEach(i -> array[i] = array[i + 1]);
     }
-    entriesCount--;
+    elementsCount--;
 
     return deletedElement;
   }
 
   public void trimToSize() {
-    array = Arrays.copyOf(array, entriesCount);
-    capacity = entriesCount;
+    array = Arrays.copyOf(array, elementsCount);
+    capacity = elementsCount;
   }
 
   public Integer size() {
-    return entriesCount;
+    return elementsCount;
   }
 
   @Override
   public String toString() {
     return Arrays.stream(array)
-        .limit(entriesCount).map(Object::toString)
+        .limit(elementsCount).map(Object::toString)
         .collect(Collectors.joining(", ", "[", "]"));
   }
 }
