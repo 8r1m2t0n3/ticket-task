@@ -1,3 +1,4 @@
 # Ticket task
 Program output:
-![image](https://github.com/user-attachments/assets/26602c9f-ce6e-4007-853c-64d9a4a5d1a0)
+
+![img](https://github.com/user-attachments/assets/57dde7e6-d3c4-4f80-a93b-7cfb63f5b0f4)
