@@ -35,9 +35,6 @@ public class MyArrayList<E> {
   @SuppressWarnings("unchecked")
   public E get(int index) {
     Objects.checkIndex(index, elementsCount);
-    if (index > elementsCount - 1) {
-      return null;
-    }
     return (E) array[index];
   }
 
