@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NullableWarning {
 
-  String message() default "\033[3mWarning: Field [%s] is null in class [%s]!\033[0m";
+  String message() default "\033[3mWarning: Field [%s] is null in an object of class [%s]!\033[0m";
 }
