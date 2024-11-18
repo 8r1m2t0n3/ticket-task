@@ -1,5 +1,6 @@
 package org.andersen.homework.model.entity.ticket;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -20,7 +21,7 @@ public class Ticket {
   private final UUID id = UUID.randomUUID();
 
   @NullableWarning
-  private Float priceInUsd;
+  private BigDecimal priceInUsd;
 
   public void share(String phoneNumber) {
     System.out.println("Ticket was shared by phone: " + phoneNumber + ".");
