@@ -23,19 +23,19 @@ public class MainClass {
     System.out.println("\n-----------------------------\n");
 
     System.out.println("/// MyHashSet ///\n");
-    MyHashSet<Integer> myHashSet = new MyHashSet<>(10);
-    System.out.println("Is empty: " + myHashSet.isEmpty());
+    MyHashSet<Integer> myHashSet = new MyHashSet<>();
     System.out.println("Size: " + myHashSet.size());
     myHashSet.add(1);
     myHashSet.add(2);
     myHashSet.add(2);
     myHashSet.add(3);
     System.out.println(myHashSet);
-    System.out.println("Contains '" + 3 + "' : " + myHashSet.contains(3));
+    System.out.println("Is contains '" + 3 + "' : " + myHashSet.contains(3));
     System.out.println("Size: " + myHashSet.size());
     myHashSet.remove(3);
     myHashSet.remove(4);
-    System.out.println("Is empty: " + myHashSet.isEmpty());
+    myHashSet.add(7);
+    myHashSet.add(8);
     myHashSet.iterator().forEachRemaining(System.out::print);
   }
 }
