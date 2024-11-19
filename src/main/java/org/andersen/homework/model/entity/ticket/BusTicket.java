@@ -2,6 +2,7 @@ package org.andersen.homework.model.entity.ticket;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -28,7 +29,7 @@ public class BusTicket extends Ticket {
       @JsonProperty("ticketType") String type,
       @JsonProperty("startDate") LocalDate startDate,
       @JsonProperty("price") Float price) {
-    super(price);
+    super(BigDecimal.valueOf(price));
     this.ticketClass = ticketClass;
     this.type = type;
     this.startDate = startDate;

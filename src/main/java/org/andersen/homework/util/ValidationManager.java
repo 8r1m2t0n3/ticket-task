@@ -5,6 +5,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,7 +72,7 @@ public class ValidationManager {
     if (busTicket.getStartDate() != null && busTicket.getStartDate().isAfter(LocalDate.now())) {
       throw new BusTicketStartDateIsInFutureException();
     }
-    if (busTicket.getPriceInUsd() != null && busTicket.getPriceInUsd() < 0) {
+    if (busTicket.getPriceInUsd() != null && busTicket.getPriceInUsd().compareTo(BigDecimal.ZERO) < 0) {
       throw new BusTicketPriceNotEvenException();
     }
   }
