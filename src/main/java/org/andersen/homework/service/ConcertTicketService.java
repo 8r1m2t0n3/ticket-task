@@ -1,9 +1,11 @@
 package org.andersen.homework.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.andersen.homework.model.entity.ticket.ConcertTicket;
@@ -27,7 +29,7 @@ public class ConcertTicketService {
     }
   }
 
-  public Optional<ConcertTicket> findById(short id) {
+  public Optional<ConcertTicket> findById(UUID id) {
     return TICKET_LIST.stream().filter(o -> o.getId().equals(id)).findFirst();
   }
 
@@ -39,7 +41,7 @@ public class ConcertTicketService {
 
   public static ConcertTicket getRandomConcertTicket() {
     ConcertTicket ticket = new ConcertTicket(
-        ((float) RandomizerUtil.getRandomInt(10, 1000)) / 100,
+        BigDecimal.valueOf(((float) RandomizerUtil.getRandomInt(10, 1000)) / 100),
         RandomizerUtil.getRandomString(RandomizerUtil.getRandomInt(1, 10)),
         (short) RandomizerUtil.getRandomInt(0, 999),
         ((float) RandomizerUtil.getRandomInt(10, 1000)) / 100,

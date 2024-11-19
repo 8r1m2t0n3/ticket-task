@@ -3,6 +3,7 @@ package org.andersen.homework.model.entity.ticket;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,8 +39,8 @@ public class ConcertTicket extends Ticket {
 
   private Boolean isPromo;
 
-  public ConcertTicket(Float priceInUsd, String concertHallName, Short eventCode,
-      Float backpackWeightInKg, StadiumSector stadiumSector, LocalDateTime time, Boolean isPromo) {
+  public ConcertTicket(BigDecimal priceInUsd, String concertHallName, Short eventCode,
+                       Float backpackWeightInKg, StadiumSector stadiumSector, LocalDateTime time, Boolean isPromo) {
     super(priceInUsd);
     this.concertHallName = concertHallName;
     this.eventCode = eventCode;
