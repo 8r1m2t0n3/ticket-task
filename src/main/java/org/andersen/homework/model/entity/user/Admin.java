@@ -2,7 +2,7 @@ package org.andersen.homework.model.entity.user;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.andersen.homework.model.entity.Ticket;
+import org.andersen.homework.model.entity.ticket.Ticket;
 import org.andersen.homework.model.enums.UserRole;
 
 @ToString(callSuper = true)
