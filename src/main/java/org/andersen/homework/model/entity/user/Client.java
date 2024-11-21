@@ -18,9 +18,4 @@ public class Client extends User {
   public Client() {
     super(UserRole.CLIENT);
   }
-
-  @Override
-  public void sayHi() {
-    System.out.println("Hi! I am User");
-  }
 }
