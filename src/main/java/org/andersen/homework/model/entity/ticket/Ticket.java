@@ -1,5 +1,6 @@
 package org.andersen.homework.model.entity.ticket;
 
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.andersen.homework.annotation.NullableWarning;
+import org.andersen.homework.model.enums.TicketType;
 
 @Getter
 @Setter
@@ -18,10 +20,18 @@ import org.andersen.homework.annotation.NullableWarning;
 @AllArgsConstructor
 public class Ticket {
 
-  private final UUID id = UUID.randomUUID();
+  private UUID id;
+
+  @NotNull
+  private TicketType type;
 
   @NullableWarning
   private BigDecimal priceInUsd;
+
+  public Ticket(TicketType type, BigDecimal priceInUsd) {
+    this.type = type;
+    this.priceInUsd = priceInUsd;
+  }
 
   public void share(String phoneNumber) {
     System.out.println("Ticket was shared by phone: " + phoneNumber + ".");

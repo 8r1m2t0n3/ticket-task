@@ -7,31 +7,35 @@ import java.time.LocalDate;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.andersen.homework.model.enums.BusTicketClass;
+import org.andersen.homework.model.enums.BusTicketDuration;
+import org.andersen.homework.model.enums.TicketType;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class BusTicket extends Ticket {
 
   private BusTicketClass ticketClass;
 
-  private String type;
+  private BusTicketDuration duration;
 
   private LocalDate startDate;
 
   @JsonCreator
   @Builder
   public BusTicket(@JsonProperty("ticketClass") BusTicketClass ticketClass,
-      @JsonProperty("ticketType") String type,
+      @JsonProperty("ticketDuration") BusTicketDuration duration,
       @JsonProperty("startDate") LocalDate startDate,
       @JsonProperty("price") Float price) {
-    super(BigDecimal.valueOf(price));
+    super(TicketType.BUS, BigDecimal.valueOf(price));
     this.ticketClass = ticketClass;
-    this.type = type;
+    this.duration = duration;
     this.startDate = startDate;
   }
 }
