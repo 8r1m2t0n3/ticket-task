@@ -23,6 +23,13 @@ import org.andersen.homework.model.enums.UserRole;
 
 public class UserDaoJDBC implements Dao<User, UUID> {
 
+  private static final String INSERT_QUERY = "INSERT INTO \"user\" (id, role, ticket_id) VALUES (?, ?, ?)";
+  private static final String UPDATE_QUERY = "UPDATE \"user\" SET ticket_id = ? WHERE id = ?";
+  private static final String DELETE_QUERY = "DELETE FROM \"user\" WHERE id = ?";
+  private static final String SELECT_ALL_QUERY = "SELECT * FROM \"user\" WHERE id = ?";
+  private static final String SELECT_USERS_COUNT_BY_TICKET_ID = "SELECT COUNT(*) FROM \"user\" WHERE ticket_id = ?";
+
+
   private final Connection connection;
   private final TicketDaoJDBC ticketDao;
 
@@ -33,12 +40,10 @@ public class UserDaoJDBC implements Dao<User, UUID> {
 
   @Override
   public User save(User user) {
-    String sql = "INSERT INTO \"user\" (id, role, ticket_id) VALUES (?, ?, ?)";
-
     UUID userId = UUID.randomUUID();
     user.setId(userId);
 
-    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+    try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
       preparedStatement.setObject(1, user.getId());
       preparedStatement.setString(2, user.getRole().name());
 
@@ -66,9 +71,7 @@ public class UserDaoJDBC implements Dao<User, UUID> {
 
   @Override
   public void update(UUID id, User user) {
-    String sql = "UPDATE \"user\" SET ticket_id = ? WHERE id = ?";
-
-    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+    try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
 
       if (user instanceof Client client) {
         if (client.getTicket() != null && client.getTicket().getId() != null) {
@@ -87,9 +90,7 @@ public class UserDaoJDBC implements Dao<User, UUID> {
 
   @Override
   public void delete(UUID id) {
-    String sql = "DELETE FROM \"user\" WHERE id = ?";
-
-    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+    try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
       preparedStatement.setObject(1, id);
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
@@ -120,11 +121,10 @@ public class UserDaoJDBC implements Dao<User, UUID> {
 
   @Override
   public List<User> getAll() {
-    String sql = "SELECT * FROM \"user\"";
     List<User> users = new ArrayList<>();
 
     try (Statement statement = connection.createStatement()) {
-      ResultSet resultSet = statement.executeQuery(sql);
+      ResultSet resultSet = statement.executeQuery(SELECT_ALL_QUERY);
 
       while (resultSet.next()) {
         users.add(createUserFromResultSet(resultSet));
@@ -138,8 +138,7 @@ public class UserDaoJDBC implements Dao<User, UUID> {
   }
 
   private boolean isTicketAssigned(UUID ticketId) {
-    String checkSql = "SELECT COUNT(*) FROM \"user\" WHERE ticket_id = ?";
-    try (PreparedStatement checkStatement = connection.prepareStatement(checkSql)) {
+    try (PreparedStatement checkStatement = connection.prepareStatement(SELECT_USERS_COUNT_BY_TICKET_ID)) {
       checkStatement.setObject(1, ticketId);
       ResultSet resultSet = checkStatement.executeQuery();
       if (resultSet.next()) {
