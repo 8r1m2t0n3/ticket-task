@@ -29,7 +29,6 @@ public class UserDaoJDBC implements Dao<User, UUID> {
   private static final String SELECT_ALL_QUERY = "SELECT * FROM \"user\" WHERE id = ?";
   private static final String SELECT_USERS_COUNT_BY_TICKET_ID = "SELECT COUNT(*) FROM \"user\" WHERE ticket_id = ?";
 
-
   private final Connection connection;
   private final TicketDaoJDBC ticketDao;
 
