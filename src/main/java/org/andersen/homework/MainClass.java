@@ -2,6 +2,9 @@ package org.andersen.homework;
 
 import java.util.List;
 import org.andersen.homework.connection.DBConnectionSingleton;
+import org.andersen.homework.exception.ticket.TicketSavingErrorException;
+import org.andersen.homework.exception.user.UserSavingErrorException;
+import org.andersen.homework.model.dao.TransactionalConnectionManager;
 import org.andersen.homework.model.entity.ticket.BusTicket;
 import org.andersen.homework.model.entity.ticket.ConcertTicket;
 import org.andersen.homework.model.entity.ticket.Ticket;
@@ -93,6 +96,72 @@ public class MainClass {
     DB_CONNECTION.closeConnection();
   }
 
+  private static void transactionalConnectionStand() {
+    DB_CONNECTION.openConnection();
+
+    UserService userService = new UserService();
+    TicketService ticketService = new TicketService();
+
+    TransactionalConnectionManager transactionalManager = new TransactionalConnectionManager();
+
+    User client1 = new Client();
+    User client2 = new Client();
+    User client3 = new Client();
+
+    System.out.println("Users number in db before failed transactional connection: " + userService.getAll().size());
+    System.out.println("Tickets number in db before failed transactional connection: " + ticketService.getAll().size());
+
+    transactionalManager.disableAutoCommit();
+
+    transactionalManager.setSavepoint("SaveUsers1");
+    try {
+      userService.save(client1);
+      userService.save(client2);
+      userService.save(client3);
+
+      Ticket ticket = TicketService.getRandomConcertTicket();
+      ticketService.save(ticket);
+
+      throw new UserSavingErrorException(new Exception());
+
+    } catch (UserSavingErrorException | TicketSavingErrorException e) {
+      transactionalManager.rollbackToSavepoint();
+    } finally {
+      transactionalManager.releaseSavepoint();
+    }
+    transactionalManager.commitTransactions();
+
+    transactionalManager.enableAutoCommit();
+
+    System.out.println("Users number in db after failed transactional connection: " + userService.getAll().size());
+    System.out.println("Tickets number in db after failed transactional connection: " + ticketService.getAll().size());
+
+    transactionalManager.disableAutoCommit();
+
+    transactionalManager.setSavepoint("SaveUsers2");
+    try {
+      userService.save(client1);
+      userService.save(client2);
+      userService.save(client3);
+
+      Ticket ticket = TicketService.getRandomConcertTicket();
+      ticketService.save(ticket);
+
+    } catch (UserSavingErrorException | TicketSavingErrorException e) {
+      transactionalManager.rollbackToSavepoint();
+    } finally {
+      transactionalManager.releaseSavepoint();
+    }
+    transactionalManager.commitTransactions();
+
+    transactionalManager.enableAutoCommit();
+
+    System.out.println("Users number in db after successful transactional connection: " + userService.getAll().size());
+    System.out.println("Tickets number in db after successful transactional connection: " + ticketService.getAll().size());
+
+    DB_CONNECTION.closeConnection();
+  }
+
   public static void main(String[] args) {
     DB_CONNECTION.openConnection();
     DB_CONNECTION.executeSQLFile(TICKET_AND_USER_TABLES_CREATION_SQL_FILE);
@@ -101,5 +170,7 @@ public class MainClass {
     ticketsStand();
     System.out.println("\n/////////////////////////////\n");
     usersStand();
+    System.out.println("\n/////////////////////////////\n");
+    transactionalConnectionStand();
   }
 }
