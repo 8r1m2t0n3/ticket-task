@@ -2,13 +2,13 @@ package org.andersen.homework.service;
 
 import java.util.List;
 import java.util.UUID;
-import org.andersen.homework.model.dao.DaoFactory;
-import org.andersen.homework.model.dao.UserDaoJDBC;
+import org.andersen.homework.model.dao.impl.DaoFactory;
+import org.andersen.homework.model.dao.impl.UserDaoJdbc;
 import org.andersen.homework.model.entity.user.User;
 
 public class UserService {
 
-  private final UserDaoJDBC userDao = DaoFactory.createUserDao();
+  private final UserDaoJdbc userDao = DaoFactory.createUserDao();
 
   public User save(User user) {
     return userDao.save(user);

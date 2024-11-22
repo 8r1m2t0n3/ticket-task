@@ -1,4 +1,4 @@
-package org.andersen.homework.model.dao;
+package org.andersen.homework.model.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,6 +9,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.andersen.homework.exception.ticket.TicketAlreadyAssignedToAnotherUserException;
 import org.andersen.homework.exception.user.AllUsersReceivingErrorException;
 import org.andersen.homework.exception.user.TicketAssignmentToUserErrorException;
 import org.andersen.homework.exception.user.UserDeletingErrorException;
@@ -16,12 +17,13 @@ import org.andersen.homework.exception.user.UserReceivingByIdErrorException;
 import org.andersen.homework.exception.user.UserSavingErrorException;
 import org.andersen.homework.exception.user.UserUpdatingErrorException;
 import org.andersen.homework.exception.user.UnknownUserRoleException;
+import org.andersen.homework.model.dao.Dao;
 import org.andersen.homework.model.entity.user.Admin;
 import org.andersen.homework.model.entity.user.Client;
 import org.andersen.homework.model.entity.user.User;
 import org.andersen.homework.model.enums.UserRole;
 
-public class UserDaoJDBC implements Dao<User, UUID> {
+public class UserDaoJdbc implements Dao<User, UUID> {
 
   private static final String INSERT_QUERY = "INSERT INTO \"user\" (id, role, ticket_id) VALUES (?, ?, ?)";
   private static final String UPDATE_QUERY = "UPDATE \"user\" SET ticket_id = ? WHERE id = ?";
@@ -30,11 +32,11 @@ public class UserDaoJDBC implements Dao<User, UUID> {
   private static final String SELECT_USERS_COUNT_BY_TICKET_ID = "SELECT COUNT(*) FROM \"user\" WHERE ticket_id = ?";
 
   private final Connection connection;
-  private final TicketDaoJDBC ticketDao;
+  private final TicketDaoJdbc ticketDao;
 
-  public UserDaoJDBC(Connection connection) {
+  public UserDaoJdbc(Connection connection) {
     this.connection = connection;
-    ticketDao = new TicketDaoJDBC(connection);
+    ticketDao = new TicketDaoJdbc(connection);
   }
 
   @Override
@@ -51,7 +53,7 @@ public class UserDaoJDBC implements Dao<User, UUID> {
 
         if (ticketId != null) {
           if (isTicketAssigned(ticketId)) {
-            throw new RuntimeException("The ticket is already assigned to another user.");
+            throw new TicketAlreadyAssignedToAnotherUserException();
           }
           preparedStatement.setObject(3, ticketDao.get(ticketId) != null ? ticketId : null);
         } else {
