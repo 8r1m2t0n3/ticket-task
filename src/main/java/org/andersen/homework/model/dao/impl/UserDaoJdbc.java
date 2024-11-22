@@ -26,7 +26,7 @@ public class UserDaoJDBC implements Dao<User, UUID> {
   private static final String INSERT_QUERY = "INSERT INTO \"user\" (id, role, ticket_id) VALUES (?, ?, ?)";
   private static final String UPDATE_QUERY = "UPDATE \"user\" SET ticket_id = ? WHERE id = ?";
   private static final String DELETE_QUERY = "DELETE FROM \"user\" WHERE id = ?";
-  private static final String SELECT_ALL_QUERY = "SELECT * FROM \"user\" WHERE id = ?";
+  private static final String SELECT_ALL_QUERY = "SELECT * FROM \"user\"";
   private static final String SELECT_USERS_COUNT_BY_TICKET_ID = "SELECT COUNT(*) FROM \"user\" WHERE ticket_id = ?";
 
   private final Connection connection;
