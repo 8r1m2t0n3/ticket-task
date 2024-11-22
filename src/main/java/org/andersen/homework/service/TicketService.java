@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import org.andersen.homework.model.dao.DaoFactory;
-import org.andersen.homework.model.dao.TicketDaoJDBC;
+import org.andersen.homework.model.dao.impl.DaoFactory;
+import org.andersen.homework.model.dao.impl.TicketDaoJdbc;
 import org.andersen.homework.model.entity.ticket.BusTicket;
 import org.andersen.homework.model.entity.ticket.ConcertTicket;
 import org.andersen.homework.model.entity.ticket.Ticket;
@@ -18,7 +18,7 @@ import org.andersen.homework.util.RandomizerUtil;
 
 public class TicketService {
 
-  private final TicketDaoJDBC ticketDao = DaoFactory.createTicketDao();
+  private final TicketDaoJdbc ticketDao = DaoFactory.createTicketDao();
 
   public Ticket save(Ticket ticket) {
     return ticketDao.save(ticket);
