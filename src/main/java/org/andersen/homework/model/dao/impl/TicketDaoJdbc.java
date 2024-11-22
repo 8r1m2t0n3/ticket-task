@@ -1,4 +1,4 @@
-package org.andersen.homework.model.dao;
+package org.andersen.homework.model.dao.impl;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -16,6 +16,7 @@ import org.andersen.homework.exception.ticket.TicketDeletingErrorException;
 import org.andersen.homework.exception.ticket.TicketReceivingByIdErrorException;
 import org.andersen.homework.exception.ticket.TicketSavingErrorException;
 import org.andersen.homework.exception.ticket.TicketUpdatingErrorException;
+import org.andersen.homework.model.dao.Dao;
 import org.andersen.homework.model.entity.ticket.BusTicket;
 import org.andersen.homework.model.entity.ticket.ConcertTicket;
 import org.andersen.homework.model.entity.ticket.Ticket;
@@ -24,7 +25,7 @@ import org.andersen.homework.model.enums.BusTicketDuration;
 import org.andersen.homework.model.enums.StadiumSector;
 import org.andersen.homework.model.enums.TicketType;
 
-public class TicketDaoJDBC implements Dao<Ticket, UUID> {
+public class TicketDaoJdbc implements Dao<Ticket, UUID> {
 
   private static final String INSERT_QUERY = "INSERT INTO ticket(" +
       "id, type, price_in_usd, concert_hall_name, event_code, " +
@@ -41,7 +42,7 @@ public class TicketDaoJDBC implements Dao<Ticket, UUID> {
 
   private final Connection connection;
 
-  TicketDaoJDBC(Connection connection) {
+  TicketDaoJdbc(Connection connection) {
     this.connection = connection;
   }
 
