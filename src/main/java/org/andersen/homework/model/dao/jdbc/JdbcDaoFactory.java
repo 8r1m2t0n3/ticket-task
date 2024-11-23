@@ -1,8 +1,8 @@
-package org.andersen.homework.model.dao.impl;
+package org.andersen.homework.model.dao.jdbc;
 
 import org.andersen.homework.connection.DBConnectionSingleton;
 
-public class DaoFactory {
+public class JdbcDaoFactory {
 
   public static TicketDaoJdbc createTicketDao() {
     return new TicketDaoJdbc(DBConnectionSingleton.getInstance().getConnection());
