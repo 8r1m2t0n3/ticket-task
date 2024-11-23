@@ -1,4 +1,4 @@
-package org.andersen.homework.model.dao.impl;
+package org.andersen.homework.model.dao.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

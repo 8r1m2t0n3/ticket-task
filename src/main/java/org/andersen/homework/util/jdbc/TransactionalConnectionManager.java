@@ -1,4 +1,4 @@
-package org.andersen.homework.model.dao;
+package org.andersen.homework.util.jdbc;
 
 import java.sql.Connection;
 import java.sql.SQLException;
