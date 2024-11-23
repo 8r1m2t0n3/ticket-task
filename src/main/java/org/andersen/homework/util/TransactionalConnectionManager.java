@@ -1,4 +1,4 @@
-package org.andersen.homework.util.jdbc;
+package org.andersen.homework.util;
 
 import java.sql.Connection;
 import java.sql.SQLException;

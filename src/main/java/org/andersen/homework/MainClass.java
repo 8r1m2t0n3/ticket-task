@@ -4,7 +4,7 @@ import java.util.List;
 import org.andersen.homework.connection.DBConnectionSingleton;
 import org.andersen.homework.exception.ticket.TicketSavingErrorException;
 import org.andersen.homework.exception.user.UserSavingErrorException;
-import org.andersen.homework.util.jdbc.TransactionalConnectionManager;
+import org.andersen.homework.util.TransactionalConnectionManager;
 import org.andersen.homework.model.entity.ticket.BusTicket;
 import org.andersen.homework.model.entity.ticket.ConcertTicket;
 import org.andersen.homework.model.entity.ticket.Ticket;
