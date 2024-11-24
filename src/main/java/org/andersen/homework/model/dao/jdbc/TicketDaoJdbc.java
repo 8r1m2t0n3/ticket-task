@@ -145,7 +145,7 @@ public class TicketDaoJdbc implements Dao<Ticket, UUID> {
   }
 
   @Override
-  public Ticket get(UUID id) {
+  public Ticket getById(UUID id) {
     Ticket ticket = null;
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {

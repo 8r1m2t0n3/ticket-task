@@ -55,7 +55,7 @@ public class UserDaoJdbc implements Dao<User, UUID> {
           if (isTicketAssigned(ticketId)) {
             throw new TicketAlreadyAssignedToAnotherUserException();
           }
-          preparedStatement.setObject(3, ticketDao.get(ticketId) != null ? ticketId : null);
+          preparedStatement.setObject(3, ticketDao.getById(ticketId) != null ? ticketId : null);
         } else {
           preparedStatement.setNull(3, Types.OTHER);
         }
@@ -100,7 +100,7 @@ public class UserDaoJdbc implements Dao<User, UUID> {
   }
 
   @Override
-  public User get(UUID id) {
+  public User getById(UUID id) {
     String sql = "SELECT * FROM \"user\" WHERE id = ?";
     User user = null;
 
@@ -160,7 +160,7 @@ public class UserDaoJdbc implements Dao<User, UUID> {
       Client client = new Client();
       client.setId(id);
       if (ticketId != null) {
-        client.setTicket(ticketDao.get(ticketId));
+        client.setTicket(ticketDao.getById(ticketId));
       }
       return client;
     } else if (role == UserRole.ADMIN) {

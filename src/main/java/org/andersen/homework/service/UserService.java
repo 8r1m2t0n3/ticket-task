@@ -23,7 +23,7 @@ public class UserService {
   }
 
   public User getById(UUID id) {
-    return userDao.get(id);
+    return userDao.getById(id);
   }
 
   public List<User> getAll() {
