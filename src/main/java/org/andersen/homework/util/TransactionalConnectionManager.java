@@ -32,6 +32,14 @@ public class TransactionalConnectionManager {
     }
   }
 
+  public boolean getAutoCommit() {
+    try {
+      return connection.getAutoCommit();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   public void setSavepoint(String name) {
     if (savepoint == null) {
       try {
