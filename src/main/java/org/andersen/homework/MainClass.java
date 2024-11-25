@@ -20,8 +20,6 @@ public class MainClass {
   private static final DBConnectionSingleton DB_CONNECTION = DBConnectionSingleton.getInstance();
 
   private static void ticketsStand() {
-    DB_CONNECTION.openConnection();
-
     TicketService ticketService = new TicketService();
 
     ConcertTicket concertTicket = TicketService.getRandomConcertTicket();
@@ -50,13 +48,9 @@ public class MainClass {
       ticketService.delete(ticket.getId());
     }
     System.out.println("Tickets in db: " + ticketService.getAll().size());
-
-    DB_CONNECTION.closeConnection();
   }
 
   public static void usersStand() {
-    DB_CONNECTION.openConnection();
-
     UserService userService = new UserService();
     TicketService ticketService = new TicketService();
 
@@ -86,19 +80,13 @@ public class MainClass {
     for (User user : users) {
       userService.delete(user.getId());
     }
-    System.out.println("Users in db " + userService.getAll().size());
-    System.out.println("Tickets in db " + ticketService.getAll().size());
-
     for (Ticket t : ticketService.getAll()) {
       ticketService.delete(t.getId());
     }
-
-    DB_CONNECTION.closeConnection();
+    System.out.println("Users in db " + userService.getAll().size());
   }
 
   private static void transactionalConnectionStand() {
-    DB_CONNECTION.openConnection();
-
     UserService userService = new UserService();
     TicketService ticketService = new TicketService();
 
@@ -159,18 +147,24 @@ public class MainClass {
     System.out.println("Users number in db after successful transactional connection: " + userService.getAll().size());
     System.out.println("Tickets number in db after successful transactional connection: " + ticketService.getAll().size());
 
-    DB_CONNECTION.closeConnection();
+    for (User user : userService.getAll()) {
+      userService.delete(user.getId());
+    }
+    for (Ticket t : ticketService.getAll()) {
+      ticketService.delete(t.getId());
+    }
   }
 
   public static void main(String[] args) {
     DB_CONNECTION.openConnection();
     DB_CONNECTION.executeSQLFile(TICKET_AND_USER_TABLES_CREATION_SQL_FILE);
-    DB_CONNECTION.closeConnection();
 
     ticketsStand();
     System.out.println("\n/////////////////////////////\n");
     usersStand();
     System.out.println("\n/////////////////////////////\n");
     transactionalConnectionStand();
+
+    DB_CONNECTION.closeConnection();
   }
 }
