@@ -33,7 +33,7 @@ public class TicketService {
   }
 
   public Ticket getById(UUID id) {
-    return ticketDao.get(id);
+    return ticketDao.getById(id);
   }
 
   public List<Ticket> getAll() {

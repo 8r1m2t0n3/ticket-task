@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.andersen.homework.annotation.NullableWarning;
+import org.andersen.homework.model.entity.user.Client;
 import org.andersen.homework.model.enums.TicketType;
 
 @Entity
@@ -37,6 +38,8 @@ public class Ticket {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID id;
+
+  private Client client;
 
   @NotNull
   @Column(name = "type")

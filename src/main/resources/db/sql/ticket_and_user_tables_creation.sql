@@ -1,3 +1,9 @@
+CREATE TABLE IF NOT EXISTS "user" (
+    id UUID PRIMARY KEY,
+    role VARCHAR(50) NOT NULL,
+    CHECK (role IN ('CLIENT', 'ADMIN'))
+);
+
 CREATE TABLE IF NOT EXISTS ticket (
     id UUID PRIMARY KEY,
     type VARCHAR(50) NOT NULL,
@@ -11,12 +17,7 @@ CREATE TABLE IF NOT EXISTS ticket (
     ticket_class VARCHAR(50), -- Specific to BusTicket
     duration VARCHAR(50), -- Specific to BusTicket
     start_date DATE, -- Specific to BusTicket
+    user_id UUID UNIQUE,
+    FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE,
     CHECK (type IN ('CONCERT', 'BUS'))
-);
-
-CREATE TABLE IF NOT EXISTS "user" (
-    id UUID PRIMARY KEY,
-    role VARCHAR(50) NOT NULL,
-    ticket_id UUID UNIQUE REFERENCES ticket(id), -- Specific to Client
-    CHECK (role IN ('CLIENT', 'ADMIN'))
 );
