@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.andersen.homework.annotation.NullableWarning;
+import org.andersen.homework.model.entity.user.Client;
 import org.andersen.homework.model.enums.TicketType;
 
 @Getter
@@ -21,6 +22,8 @@ import org.andersen.homework.model.enums.TicketType;
 public class Ticket {
 
   private UUID id;
+
+  private Client client;
 
   @NotNull
   private TicketType type;
