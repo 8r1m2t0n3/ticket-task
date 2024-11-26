@@ -3,7 +3,6 @@ package org.andersen.homework.model.entity.ticket;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import java.math.BigDecimal;

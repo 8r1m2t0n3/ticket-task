@@ -1,6 +1,5 @@
 package org.andersen.homework.model.entity.user;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
