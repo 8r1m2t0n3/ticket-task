@@ -11,13 +11,9 @@ public class SessionFactoryManager {
 
   private static SessionFactory buildSessionFactory() {
     try {
-      return new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+      return new Configuration().configure("/hibernate.cfg.xml").buildSessionFactory();
     } catch (Throwable ex) {
       throw new ExceptionInInitializerError("Initial SessionFactory creation failed." + ex);
     }
-  }
-
-  public static void shutdown() {
-    sessionFactory.close();
   }
 }
