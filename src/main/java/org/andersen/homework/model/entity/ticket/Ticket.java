@@ -9,9 +9,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -19,9 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.andersen.homework.annotation.NullableWarning;
 import org.andersen.homework.model.entity.user.Client;
-import org.andersen.homework.model.enums.TicketType;
 
 @Entity
 @Table(name = "ticket")
@@ -29,7 +28,6 @@ import org.andersen.homework.model.enums.TicketType;
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
-@ToString
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,26 +37,22 @@ public class Ticket {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID id;
 
+  @OneToOne(mappedBy = "ticket")
   private Client client;
 
-  @NotNull
-  @Column(name = "type")
-  private TicketType type;
-
-  @NullableWarning
   @Column(name = "price_in_usd")
   private BigDecimal priceInUsd;
 
-  public Ticket(TicketType type, BigDecimal priceInUsd) {
-    this.type = type;
+  public Ticket(BigDecimal priceInUsd) {
     this.priceInUsd = priceInUsd;
   }
 
-  public void share(String phoneNumber) {
-    System.out.println("Ticket was shared by phone: " + phoneNumber + ".");
-  }
-
-  public void share(String phoneNumber, String email) {
-    System.out.println("Ticket was shared by phone: " + phoneNumber + " and email: " + email + ".");
+  @Override
+  public String toString() {
+    return "Ticket{" +
+        "id=" + id +
+        ", client_id=" + (client != null ? client.getId() : null) +
+        ", priceInUsd=" + priceInUsd +
+        '}';
   }
 }

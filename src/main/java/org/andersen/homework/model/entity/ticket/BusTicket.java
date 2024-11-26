@@ -16,7 +16,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.andersen.homework.model.enums.BusTicketClass;
 import org.andersen.homework.model.enums.BusTicketDuration;
-import org.andersen.homework.model.enums.TicketType;
 
 @Entity
 @DiscriminatorValue("BUS")
@@ -42,7 +41,7 @@ public class BusTicket extends Ticket {
       @JsonProperty("ticketDuration") BusTicketDuration duration,
       @JsonProperty("startDate") LocalDate startDate,
       @JsonProperty("price") Float price) {
-    super(TicketType.BUS, BigDecimal.valueOf(price));
+    super(BigDecimal.valueOf(price));
     this.ticketClass = ticketClass;
     this.duration = duration;
     this.startDate = startDate;
