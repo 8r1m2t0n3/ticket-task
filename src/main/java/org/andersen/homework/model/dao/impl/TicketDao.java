@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.andersen.homework.model.dao.Dao;
 import org.andersen.homework.model.entity.ticket.Ticket;
 import org.andersen.homework.model.entity.user.Client;
+import org.andersen.homework.model.entity.user.User;
 import org.andersen.homework.util.SessionFactoryManager;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -31,7 +32,14 @@ public class TicketDao implements Dao<Ticket, UUID> {
       transaction = session.beginTransaction();
 
       ticket.setId(id);
-      session.merge("Ticket", ticket);
+
+      if (ticket.getClient() != null) {
+        Client client = ticket.getClient();
+        client.setTicket(ticket);
+        session.merge((User) client);
+      }
+
+      session.merge(ticket);
 
       transaction.commit();
     }
