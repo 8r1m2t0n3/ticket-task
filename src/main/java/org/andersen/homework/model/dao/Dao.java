@@ -5,7 +5,7 @@ import java.util.List;
 public interface Dao<T, K> {
   T save(T t);
   void update(K id, T t);
-  void delete(K id);
-  T getById(K id);
+  void remove(K id);
+  T findById(K id);
   List<T> getAll();
 }
