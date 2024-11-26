@@ -1,14 +1,18 @@
 package org.andersen.homework.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-import org.andersen.homework.model.dao.jdbc.JdbcDaoFactory;
-import org.andersen.homework.model.dao.jdbc.UserDaoJdbc;
+import org.andersen.homework.model.dao.impl.UserDao;
 import org.andersen.homework.model.entity.user.User;
 
 public class UserService {
 
-  private final UserDaoJdbc userDao = JdbcDaoFactory.createUserDao();
+  private final UserDao userDao;
+
+  public UserService(UserDao userDao) {
+    this.userDao = userDao;
+  }
 
   public User save(User user) {
     return userDao.save(user);
@@ -18,12 +22,12 @@ public class UserService {
     userDao.update(id, user);
   }
 
-  public void delete(UUID id) {
-    userDao.delete(id);
+  public void remove(UUID id) {
+    userDao.remove(id);
   }
 
-  public User getById(UUID id) {
-    return userDao.getById(id);
+  public Optional<User> getById(UUID id) {
+    return Optional.ofNullable(userDao.findById(id));
   }
 
   public List<User> getAll() {

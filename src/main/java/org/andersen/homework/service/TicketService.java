@@ -4,21 +4,24 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-import org.andersen.homework.model.dao.jdbc.JdbcDaoFactory;
-import org.andersen.homework.model.dao.jdbc.TicketDaoJdbc;
+import org.andersen.homework.model.dao.impl.TicketDao;
 import org.andersen.homework.model.entity.ticket.BusTicket;
 import org.andersen.homework.model.entity.ticket.ConcertTicket;
 import org.andersen.homework.model.entity.ticket.Ticket;
 import org.andersen.homework.model.enums.BusTicketClass;
 import org.andersen.homework.model.enums.BusTicketDuration;
 import org.andersen.homework.model.enums.StadiumSector;
-import org.andersen.homework.model.enums.TicketType;
 import org.andersen.homework.util.RandomizerUtil;
 
 public class TicketService {
 
-  private final TicketDaoJdbc ticketDao = JdbcDaoFactory.createTicketDao();
+  private final TicketDao ticketDao;
+
+  public TicketService() {
+    this.ticketDao = new TicketDao();
+  }
 
   public Ticket save(Ticket ticket) {
     return ticketDao.save(ticket);
@@ -28,12 +31,16 @@ public class TicketService {
     ticketDao.update(id, ticket);
   }
 
-  public void delete(UUID id) {
-    ticketDao.delete(id);
+  public void remove(UUID id) {
+    ticketDao.remove(id);
   }
 
-  public Ticket getById(UUID id) {
-    return ticketDao.getById(id);
+  public Optional<Ticket> getById(UUID id) {
+    return Optional.ofNullable(ticketDao.findById(id));
+  }
+
+  public Optional<Ticket> getByUserId(UUID userId) {
+    return Optional.ofNullable(ticketDao.findByUserId(userId));
   }
 
   public List<Ticket> getAll() {
@@ -54,7 +61,6 @@ public class TicketService {
   public static BusTicket getRandomBusTicket() {
     BusTicket busTicket = new BusTicket();
 
-    busTicket.setType(TicketType.BUS);
     busTicket.setPriceInUsd(BigDecimal.valueOf(RandomizerUtil.getRandomInt(10, 5000)));
     busTicket.setTicketClass(RandomizerUtil.getRandomFromEnum(BusTicketClass.class));
     busTicket.setDuration(RandomizerUtil.getRandomFromEnum(BusTicketDuration.class));
