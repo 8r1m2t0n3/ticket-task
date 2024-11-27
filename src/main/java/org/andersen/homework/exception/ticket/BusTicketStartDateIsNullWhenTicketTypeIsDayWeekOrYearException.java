@@ -1,4 +1,4 @@
-package org.andersen.homework.exception.bus_ticket;
+package org.andersen.homework.exception.ticket;
 
 public class BusTicketStartDateIsNullWhenTicketTypeIsDayWeekOrYearException extends Exception {
 

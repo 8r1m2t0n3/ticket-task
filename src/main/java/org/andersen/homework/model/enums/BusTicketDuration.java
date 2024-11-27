@@ -1,6 +1,6 @@
 package org.andersen.homework.model.enums;
 
-public enum BusTicketType {
+public enum BusTicketDuration {
   DAY,
   WEEK,
   MONTH,

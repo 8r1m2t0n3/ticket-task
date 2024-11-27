@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Set;
 import org.andersen.homework.annotation.processor.CustomAnnotationProcessor;
 import org.andersen.homework.annotation.processor.NullableWarningProcessor;
-import org.andersen.homework.exception.bus_ticket.BusTicketPriceIsNullException;
-import org.andersen.homework.exception.bus_ticket.BusTicketPriceNotEvenException;
-import org.andersen.homework.exception.bus_ticket.BusTicketStartDateIsInFutureException;
-import org.andersen.homework.exception.bus_ticket.BusTicketStartDateIsNullWhenTicketTypeIsDayWeekOrYearException;
-import org.andersen.homework.exception.bus_ticket.UndefinedBusTicketTypeException;
+import org.andersen.homework.exception.ticket.BusTicketPriceIsNullException;
+import org.andersen.homework.exception.ticket.BusTicketPriceNotEvenException;
+import org.andersen.homework.exception.ticket.BusTicketStartDateIsInFutureException;
+import org.andersen.homework.exception.ticket.BusTicketStartDateIsNullWhenTicketTypeIsDayWeekOrYearException;
+import org.andersen.homework.exception.ticket.UndefinedBusTicketTypeException;
 import org.andersen.homework.model.entity.ticket.BusTicket;
-import org.andersen.homework.model.enums.BusTicketType;
+import org.andersen.homework.model.enums.BusTicketDuration;
 
 public class ValidationManager {
 
@@ -57,11 +57,11 @@ public class ValidationManager {
       UndefinedBusTicketTypeException, BusTicketStartDateIsNullWhenTicketTypeIsDayWeekOrYearException,
       BusTicketStartDateIsInFutureException, BusTicketPriceNotEvenException {
     if (busTicket.getType() != null) {
-      if (!Arrays.stream(BusTicketType.values())
-          .map(BusTicketType::name).toList().contains(busTicket.getType())) {
+      if (!Arrays.stream(BusTicketDuration.values())
+          .map(BusTicketDuration::name).toList().contains(busTicket.getDuration().name())) {
         throw new UndefinedBusTicketTypeException();
       }
-      if (!busTicket.getType().equals(BusTicketType.MONTH.name())
+      if (!busTicket.getDuration().equals(BusTicketDuration.MONTH)
           && busTicket.getStartDate() == null) {
         throw new BusTicketStartDateIsNullWhenTicketTypeIsDayWeekOrYearException();
       }

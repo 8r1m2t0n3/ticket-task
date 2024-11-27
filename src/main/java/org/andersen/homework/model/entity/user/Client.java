@@ -1,5 +1,6 @@
 package org.andersen.homework.model.entity.user;
 
+import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,8 +20,7 @@ public class Client extends User {
     super(UserRole.CLIENT);
   }
 
-  @Override
-  public void sayHi() {
-    System.out.println("Hi! I am User");
+  public Client(UUID id, UserRole role) {
+    super(id, role);
   }
 }
