@@ -6,7 +6,7 @@ import org.andersen.homework.model.dao.Dao;
 import org.andersen.homework.model.entity.ticket.Ticket;
 import org.andersen.homework.model.entity.user.Client;
 import org.andersen.homework.model.entity.user.User;
-import org.andersen.homework.util.SessionFactoryManager;
+import org.andersen.homework.config.SessionFactoryManager;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;

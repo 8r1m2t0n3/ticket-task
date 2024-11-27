@@ -1,4 +1,4 @@
-package org.andersen.homework.util;
+package org.andersen.homework.config;
 
 import lombok.Getter;
 import org.hibernate.SessionFactory;
@@ -11,7 +11,7 @@ public class SessionFactoryManager {
 
   private static SessionFactory buildSessionFactory() {
     try {
-      return new Configuration().configure("/hibernate.cfg.xml").buildSessionFactory();
+      return new Configuration().configure().buildSessionFactory();
     } catch (Throwable ex) {
       throw new ExceptionInInitializerError("Initial SessionFactory creation failed." + ex);
     }
