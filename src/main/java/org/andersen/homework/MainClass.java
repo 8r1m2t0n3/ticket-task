@@ -9,6 +9,7 @@ import org.andersen.homework.model.entity.user.Client;
 import org.andersen.homework.model.entity.user.User;
 import org.andersen.homework.service.TicketService;
 import org.andersen.homework.service.UserService;
+import org.andersen.homework.util.TicketGenerator;
 
 public class MainClass {
 
@@ -24,8 +25,8 @@ public class MainClass {
       TICKET_SERVICE.remove(ticket.getId());
     }
 
-    ConcertTicket concertTicket = TicketService.getRandomConcertTicket();
-    BusTicket busTicket = TicketService.getRandomBusTicket();
+    ConcertTicket concertTicket = TicketGenerator.getRandomConcertTicket();
+    BusTicket busTicket = TicketGenerator.getRandomBusTicket();
 
     Ticket savedConcertTicket = TICKET_SERVICE.save(concertTicket);
     Ticket savedBusTicket = TICKET_SERVICE.save(busTicket);
