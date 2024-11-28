@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import javax.sql.DataSource;
+import lombok.RequiredArgsConstructor;
 import org.andersen.homework.exception.ticket.*;
 import org.andersen.homework.model.dao.Dao;
 import org.andersen.homework.model.entity.ticket.BusTicket;
@@ -16,7 +18,10 @@ import org.andersen.homework.model.enums.BusTicketDuration;
 import org.andersen.homework.model.enums.StadiumSector;
 import org.andersen.homework.model.enums.TicketType;
 import org.andersen.homework.model.enums.UserRole;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class TicketDaoJdbc implements Dao<Ticket, UUID> {
 
   private static final String INSERT_QUERY = "INSERT INTO ticket(" +
@@ -34,18 +39,15 @@ public class TicketDaoJdbc implements Dao<Ticket, UUID> {
   private static final String SELECT_ALL_QUERY = "SELECT * FROM ticket";
   private static final String SELECT_BY_USER_ID = "SELECT * from ticket WHERE user_id = ?";
 
-  private final Connection connection;
-
-  public TicketDaoJdbc(Connection connection) {
-    this.connection = connection;
-  }
+  private final DataSource dataSource;
 
   @Override
   public Ticket save(Ticket ticket) {
     UUID ticketId = UUID.randomUUID();
     ticket.setId(ticketId);
 
-    try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
+    try (Connection connection = dataSource.getConnection()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
       int lastIndex = setCommonFields(preparedStatement, ticket);
 
       if (ticket instanceof BusTicket busTicket) {
@@ -70,7 +72,8 @@ public class TicketDaoJdbc implements Dao<Ticket, UUID> {
 
   @Override
   public void update(UUID id, Ticket ticket) {
-    try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
+    try (Connection connection = dataSource.getConnection()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
       int lastIndex = setCommonFieldsWithoutId(preparedStatement, ticket);
 
       if (ticket instanceof BusTicket busTicket) {
@@ -98,7 +101,8 @@ public class TicketDaoJdbc implements Dao<Ticket, UUID> {
 
   @Override
   public void delete(UUID id) {
-    try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
+    try (Connection connection = dataSource.getConnection()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
       preparedStatement.setObject(1, id);
       preparedStatement.execute();
     } catch (SQLException e) {
@@ -108,7 +112,8 @@ public class TicketDaoJdbc implements Dao<Ticket, UUID> {
 
   @Override
   public Ticket getById(UUID id) {
-    try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
+    try (Connection connection = dataSource.getConnection()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
       preparedStatement.setObject(1, id);
 
       ResultSet resultSet = preparedStatement.executeQuery();
@@ -122,7 +127,8 @@ public class TicketDaoJdbc implements Dao<Ticket, UUID> {
   }
 
   public Ticket getByUserId(UUID userId) {
-    try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_USER_ID)) {
+    try (Connection connection = dataSource.getConnection()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_USER_ID);
       preparedStatement.setObject(1, userId);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet.next()) {
@@ -137,7 +143,8 @@ public class TicketDaoJdbc implements Dao<Ticket, UUID> {
   @Override
   public List<Ticket> getAll() {
     List<Ticket> tickets = new ArrayList<>();
-    try (Statement statement = connection.createStatement()) {
+    try (Connection connection = dataSource.getConnection()) {
+      Statement statement = connection.createStatement();
       ResultSet resultSet = statement.executeQuery(SELECT_ALL_QUERY);
 
       while (resultSet.next()) {
@@ -232,7 +239,8 @@ public class TicketDaoJdbc implements Dao<Ticket, UUID> {
 
   private Client fetchClientById(UUID clientId) throws SQLException {
     String query = "SELECT role FROM \"user\" WHERE id = ?";
-    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    try (Connection connection = dataSource.getConnection()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
       preparedStatement.setObject(1, clientId);
       ResultSet resultSet = preparedStatement.executeQuery();
 

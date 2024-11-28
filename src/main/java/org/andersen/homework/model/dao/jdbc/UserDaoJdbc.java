@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import javax.sql.DataSource;
+import lombok.RequiredArgsConstructor;
 import org.andersen.homework.exception.user.AllUsersReceivingErrorException;
 import org.andersen.homework.exception.user.UserDeletingErrorException;
 import org.andersen.homework.exception.user.UserReceivingByIdErrorException;
@@ -21,8 +23,10 @@ import org.andersen.homework.model.entity.user.Admin;
 import org.andersen.homework.model.entity.user.Client;
 import org.andersen.homework.model.entity.user.User;
 import org.andersen.homework.model.enums.UserRole;
-import org.andersen.homework.util.TransactionalConnectionManager;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class UserDaoJdbc implements Dao<User, UUID> {
 
   private static final String INSERT_QUERY = "INSERT INTO \"user\" (id, role) VALUES (?, ?)";
@@ -30,25 +34,16 @@ public class UserDaoJdbc implements Dao<User, UUID> {
   private static final String SELECT_ALL_QUERY = "SELECT * FROM \"user\"";
   private static final String SELECT_BY_ID_QUERY = "SELECT * FROM \"user\" WHERE id = ?";
 
-  private final Connection connection;
-  private final TransactionalConnectionManager transactionalManager;
+  private final DataSource dataSource;
   private final TicketDaoJdbc ticketDao;
-
-  public UserDaoJdbc(Connection connection) {
-    this.connection = connection;
-    transactionalManager = new TransactionalConnectionManager();
-    this.ticketDao = new TicketDaoJdbc(connection);
-  }
 
   @Override
   public User save(User user) {
-    boolean transactionalState = transactionalManager.getAutoCommit();
-    transactionalManager.disableAutoCommit();
-
     UUID userId = user.getId() == null ? UUID.randomUUID() : user.getId();
     user.setId(userId);
 
-    try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
+    try (Connection connection = dataSource.getConnection()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
       preparedStatement.setObject(1, userId);
       preparedStatement.setString(2, user.getRole().name());
       preparedStatement.executeUpdate();
@@ -66,19 +61,12 @@ public class UserDaoJdbc implements Dao<User, UUID> {
 
     } catch (SQLException e) {
       throw new UserSavingErrorException(e);
-    } finally {
-      if (transactionalState) {
-        transactionalManager.enableAutoCommit();
-      }
     }
     return user;
   }
 
   @Override
   public void update(UUID id, User user) {
-    boolean transactionalState = transactionalManager.getAutoCommit();
-    transactionalManager.disableAutoCommit();
-
     user.setId(id);
 
     try {
@@ -110,16 +98,13 @@ public class UserDaoJdbc implements Dao<User, UUID> {
       }
     } catch (Exception e) {
       throw new UserUpdatingErrorException(e);
-    } finally {
-      if (transactionalState) {
-        transactionalManager.enableAutoCommit();
-      }
     }
   }
 
   @Override
   public void delete(UUID id) {
-    try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
+    try (Connection connection = dataSource.getConnection()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
       preparedStatement.setObject(1, id);
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
@@ -129,7 +114,8 @@ public class UserDaoJdbc implements Dao<User, UUID> {
 
   @Override
   public User getById(UUID id) {
-    try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
+    try (Connection connection = dataSource.getConnection()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
       preparedStatement.setObject(1, id);
       ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -147,7 +133,8 @@ public class UserDaoJdbc implements Dao<User, UUID> {
   public List<User> getAll() {
     List<User> users = new ArrayList<>();
 
-    try (Statement statement = connection.createStatement()) {
+    try (Connection connection = dataSource.getConnection()) {
+      Statement statement = connection.createStatement();
       ResultSet resultSet = statement.executeQuery(SELECT_ALL_QUERY);
 
       while (resultSet.next()) {
