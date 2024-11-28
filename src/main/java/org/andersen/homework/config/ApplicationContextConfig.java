@@ -8,7 +8,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
@@ -41,5 +43,10 @@ public class ApplicationContextConfig {
   public boolean initializeDatabase() {
     new ResourceDatabasePopulator(new ClassPathResource(TICKET_AND_USER_TABLES_CREATION_SQL_FILE)).execute(dataSource());
     return Boolean.TRUE; // dummy value
+  }
+
+  @Bean
+  public PlatformTransactionManager transactionManager() {
+    return new DataSourceTransactionManager(dataSource());
   }
 }
