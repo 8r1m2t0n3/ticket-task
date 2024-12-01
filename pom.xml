@@ -14,6 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jakarta.validation.version>3.1.0</jakarta.validation.version>
     <hibernate.validator.version>8.0.1.Final</hibernate.validator.version>
+    <hibernate.version>6.6.3.Final</hibernate.version>
     <postgresql.version>42.7.4</postgresql.version>
     <glassfish.version>4.0.2</glassfish.version>
     <jeckson.version>2.15.0</jeckson.version>
@@ -32,6 +33,11 @@
       <groupId>jakarta.validation</groupId>
       <artifactId>jakarta.validation-api</artifactId>
       <version>${jakarta.validation.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate.validator</groupId>

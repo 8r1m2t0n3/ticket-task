@@ -8,7 +8,6 @@ import org.andersen.homework.model.entity.ticket.ConcertTicket;
 import org.andersen.homework.model.enums.BusTicketClass;
 import org.andersen.homework.model.enums.BusTicketDuration;
 import org.andersen.homework.model.enums.StadiumSector;
-import org.andersen.homework.model.enums.TicketType;
 
 public class TicketGenerator {
 
@@ -26,7 +25,6 @@ public class TicketGenerator {
   public static BusTicket getRandomBusTicket() {
     BusTicket busTicket = new BusTicket();
 
-    busTicket.setType(TicketType.BUS);
     busTicket.setPriceInUsd(BigDecimal.valueOf(RandomizerUtil.getRandomInt(10, 5000)));
     busTicket.setTicketClass(RandomizerUtil.getRandomFromEnum(BusTicketClass.class));
     busTicket.setDuration(RandomizerUtil.getRandomFromEnum(BusTicketDuration.class));
