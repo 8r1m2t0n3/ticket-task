@@ -35,7 +35,8 @@ public class Ticket {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID id;
 
-  @OneToOne(mappedBy = "ticket")
+  @ManyToOne
+  @JoinColumn(name = "client_id", nullable = true)
   private Client client;
 
   @Column(name = "price_in_usd")
