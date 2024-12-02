@@ -38,13 +38,6 @@ public class TicketDao implements Dao<Ticket, UUID> {
       transaction = session.beginTransaction();
 
       ticket.setId(id);
-
-      if (ticket.getClient() != null) {
-        Client client = ticket.getClient();
-        client.setTicket(ticket);
-        session.merge((User) client);
-      }
-
       session.merge(ticket);
 
       transaction.commit();
@@ -56,17 +49,7 @@ public class TicketDao implements Dao<Ticket, UUID> {
     Transaction transaction;
     try (Session session = sessionFactory.openSession()) {
       transaction = session.beginTransaction();
-
-      Ticket ticket = session.get(Ticket.class, id);
-
-      if (ticket != null) {
-        Client client = ticket.getClient();
-        if (client != null) {
-          client.setTicket(null);
-          session.merge(client);
-        }
-        session.remove(ticket);
-      }
+      session.remove(session.get(Ticket.class, id));
       transaction.commit();
     }
   }
