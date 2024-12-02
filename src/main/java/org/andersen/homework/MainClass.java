@@ -19,12 +19,12 @@ public class MainClass {
   public static void main(String[] args) {
     ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationContextConfig.class);
 
-    ticketsStand(context);
+    demonstrationOperationsOnTickets(context);
     System.out.println("\n/////////////////////////////\n");
-    usersStand(context);
+    demonstrationOperationsOnUsers(context);
   }
 
-  private static void ticketsStand(ApplicationContext context) {
+  private static void demonstrationOperationsOnTickets(ApplicationContext context) {
     TicketService ticketService = context.getBean(TicketService.class);
 
     ConcertTicket concertTicket = TicketGenerator.getRandomConcertTicket();
@@ -55,7 +55,7 @@ public class MainClass {
     System.out.println("Tickets in db: " + ticketService.getAll().size());
   }
 
-  public static void usersStand(ApplicationContext context) {
+  public static void demonstrationOperationsOnUsers(ApplicationContext context) {
     UserService userService = context.getBean(UserService.class);
     TicketService ticketService = context.getBean(TicketService.class);
 
