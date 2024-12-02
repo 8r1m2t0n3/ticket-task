@@ -61,9 +61,7 @@ public class TicketService {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
 
-    List<BusTicket> tickets = objectMapper.readValue(resource.getInputStream(),
+    return objectMapper.readValue(resource.getInputStream(),
         objectMapper.getTypeFactory().constructCollectionType(List.class, BusTicket.class));
-
-    return tickets;
   }
 }
