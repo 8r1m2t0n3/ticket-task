@@ -9,12 +9,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +28,6 @@ import org.andersen.homework.model.entity.user.Client;
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ticket {
@@ -43,7 +44,11 @@ public class Ticket {
   private BigDecimal priceInUsd;
 
   public Ticket(BigDecimal priceInUsd) {
-    this.priceInUsd = priceInUsd;
+    setPriceInUsd(priceInUsd);
+  }
+
+  public void setPriceInUsd(BigDecimal priceInUsd) {
+    this.priceInUsd = priceInUsd.stripTrailingZeros().setScale(2, RoundingMode.DOWN);
   }
 
   @Override
@@ -53,5 +58,25 @@ public class Ticket {
         ", client_id=" + (client != null ? client.getId() : null) +
         ", priceInUsd=" + priceInUsd +
         '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Ticket ticket = (Ticket) o;
+
+    return Objects.equals(id, ticket.id) &&
+        Objects.equals(client != null ? client.getId() : null, ticket.client != null ? ticket.client.getId() : null) &&
+        Objects.equals(
+            priceInUsd != null ? priceInUsd.stripTrailingZeros().setScale(2, RoundingMode.DOWN) : null,
+            ticket.priceInUsd != null ? ticket.priceInUsd.stripTrailingZeros().setScale(2, RoundingMode.DOWN) : null);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id,
+        client != null ? client.getId() : null,
+        priceInUsd != null ? priceInUsd.stripTrailingZeros().setScale(2, RoundingMode.DOWN) : null);
   }
 }
