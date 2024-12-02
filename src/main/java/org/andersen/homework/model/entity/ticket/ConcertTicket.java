@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,6 @@ import org.andersen.homework.model.enums.StadiumSector;
 @Setter
 @NoArgsConstructor
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
 public class ConcertTicket extends Ticket {
 
   @Size(max = 10)
@@ -54,5 +54,28 @@ public class ConcertTicket extends Ticket {
     this.stadiumSector = stadiumSector;
     this.time = time;
     this.isPromo = isPromo;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+    ConcertTicket that = (ConcertTicket) o;
+    return Objects.equals(concertHallName, that.concertHallName) &&
+        Objects.equals(eventCode, that.eventCode) &&
+        Objects.equals(backpackWeightInKg, that.backpackWeightInKg) &&
+        stadiumSector == that.stadiumSector &&
+        Objects.equals(
+            time.withNano(time.getNano() / 1000000 * 1000000),
+            that.time.withNano(that.time.getNano() / 1000000 * 1000000)) &&
+        Objects.equals(isPromo, that.isPromo);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(),
+        concertHallName, eventCode, backpackWeightInKg,
+        stadiumSector, time.withNano(time.getNano() / 1000000 * 1000000),
+        isPromo);
   }
 }
