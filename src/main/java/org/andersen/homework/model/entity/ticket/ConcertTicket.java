@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -75,7 +74,7 @@ public class ConcertTicket extends Ticket {
   public int hashCode() {
     return Objects.hash(super.hashCode(),
         concertHallName, eventCode, backpackWeightInKg,
-        stadiumSector, time.withNano(time.getNano() / 1000000 * 1000000),
+        stadiumSector, time != null ? time.withNano(time.getNano() / 1000000 * 1000000) : null,
         isPromo);
   }
 }
