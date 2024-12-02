@@ -16,6 +16,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class MainClass {
 
+  public static void main(String[] args) {
+    ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationContextConfig.class);
+
+    ticketsStand(context);
+    System.out.println("\n/////////////////////////////\n");
+    usersStand(context);
+  }
+
   private static void ticketsStand(ApplicationContext context) {
     TicketService ticketService = context.getBean(TicketService.class);
 
@@ -81,13 +89,5 @@ public class MainClass {
       ticketService.delete(t.getId());
     }
     System.out.println("Users in db " + userService.getAll().size());
-  }
-
-  public static void main(String[] args) {
-    ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationContextConfig.class);
-
-    ticketsStand(context);
-    System.out.println("\n/////////////////////////////\n");
-    usersStand(context);
   }
 }
