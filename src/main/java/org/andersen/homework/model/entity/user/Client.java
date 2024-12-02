@@ -1,26 +1,27 @@
 package org.andersen.homework.model.entity.user;
 
-import java.util.UUID;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.andersen.homework.model.entity.ticket.Ticket;
-import org.andersen.homework.model.enums.UserRole;
 
+@Entity
+@DiscriminatorValue("CLIENT")
 @Getter
 @Setter
+@NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class Client extends User {
 
+  @OneToOne(cascade = CascadeType.REMOVE)
+  @JoinColumn(name = "ticket_id", referencedColumnName = "id")
   private Ticket ticket;
-
-  public Client() {
-    super(UserRole.CLIENT);
-  }
-
-  public Client(UUID id, UserRole role) {
-    super(id, role);
-  }
 }
