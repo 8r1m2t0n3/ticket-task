@@ -4,12 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.andersen.homework.model.dao.impl.TicketHibernateDao;
 import org.andersen.homework.model.entity.ticket.BusTicket;
 import org.andersen.homework.model.entity.ticket.Ticket;
+import org.andersen.homework.repository.TicketJpaRepository;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -20,39 +19,35 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class TicketService {
 
-  private final TicketHibernateDao ticketDao;
+  private final TicketJpaRepository ticketJpaRepository;
 
   @Transactional
   public Ticket save(Ticket ticket) {
-    return ticketDao.save(ticket);
+    return ticketJpaRepository.save(ticket);
   }
 
   @Transactional
   public void update(UUID id, Ticket ticket) {
     ticket.setId(id);
-    ticketDao.update(ticket);
+    ticketJpaRepository.save(ticket);
   }
 
   @Transactional
-  public void deleteById(UUID id) {
-    ticketDao.deleteById(id);
+  public void delete(UUID id) {
+    ticketJpaRepository.deleteById(id);
   }
 
-  @Transactional
-  public void delete(Ticket ticket) {
-    ticketDao.delete(ticket);
-  }
-
-  public Optional<Ticket> getById(UUID id) {
-    return Optional.ofNullable(ticketDao.findById(id));
+  public Ticket getById(UUID id) {
+    return ticketJpaRepository.findById(id).orElseThrow(() ->
+        new RuntimeException("Ticket by id: %s not found".formatted(id)));
   }
 
   public List<Ticket> getByClientId(UUID clientId) {
-    return ticketDao.findByClientId(clientId);
+    return ticketJpaRepository.findByClientId(clientId);
   }
 
   public List<Ticket> getAll() {
-    return ticketDao.getAll();
+    return ticketJpaRepository.findAll();
   }
 
   public List<BusTicket> loadBusTickets() throws IOException {
