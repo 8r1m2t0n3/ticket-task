@@ -1,14 +1,10 @@
 package org.andersen.homework.model.entity.ticket;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Objects;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,7 +20,6 @@ import org.andersen.homework.model.enums.BusTicketDuration;
 @Getter
 @NoArgsConstructor
 @ToString(callSuper = true)
-@JsonIgnoreProperties(ignoreUnknown = true)
 @EqualsAndHashCode(callSuper = true)
 public class BusTicket extends Ticket {
 
@@ -37,12 +32,11 @@ public class BusTicket extends Ticket {
   @Column(name = "start_date")
   private LocalDate startDate;
 
-  @JsonCreator
   @Builder
-  public BusTicket(@JsonProperty("ticketClass") BusTicketClass ticketClass,
-                   @JsonProperty("ticketDuration") BusTicketDuration duration,
-                   @JsonProperty("startDate") LocalDate startDate,
-                   @JsonProperty("price") BigDecimal price) {
+  public BusTicket(BusTicketClass ticketClass,
+                   BusTicketDuration duration,
+                   LocalDate startDate,
+                   BigDecimal price) {
     super(price != null ? price : BigDecimal.ZERO);
     this.ticketClass = ticketClass;
     this.duration = duration;
