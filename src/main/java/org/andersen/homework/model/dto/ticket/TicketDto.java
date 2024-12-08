@@ -5,7 +5,6 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.andersen.homework.model.dto.user.client.ClientDto;
 import org.andersen.homework.model.dto.user.client.ClientIdOnlyDto;
 
 @Getter

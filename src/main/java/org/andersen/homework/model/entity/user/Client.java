@@ -14,7 +14,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.andersen.homework.model.entity.ticket.BusTicket;
 import org.andersen.homework.model.entity.ticket.ConcertTicket;
-import org.andersen.homework.model.entity.ticket.Ticket;
 
 @Entity
 @DiscriminatorValue("CLIENT")

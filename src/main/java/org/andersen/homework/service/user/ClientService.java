@@ -1,8 +1,6 @@
 package org.andersen.homework.service.user;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -15,7 +13,6 @@ import org.andersen.homework.model.entity.ticket.BusTicket;
 import org.andersen.homework.model.entity.ticket.ConcertTicket;
 import org.andersen.homework.model.entity.ticket.Ticket;
 import org.andersen.homework.model.entity.user.Client;
-import org.andersen.homework.model.entity.user.User;
 import org.andersen.homework.repository.TicketJpaRepository;
 import org.andersen.homework.repository.UserJpaRepository;
 import org.andersen.homework.util.mapper.ticket.BusTicketMapper;
