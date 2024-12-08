@@ -37,7 +37,7 @@ public class ClientController {
   @PutMapping
   public ResponseEntity<Void> updateClient(@RequestBody ClientUpdateDto clientUpdateDto) {
     clientService.update(clientUpdateDto);
-    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")

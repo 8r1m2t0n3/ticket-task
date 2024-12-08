@@ -6,7 +6,7 @@ import org.andersen.homework.model.dto.user.UserDto;
 import org.andersen.homework.model.entity.user.User;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {ClientMapper.class})
+@Mapper(componentModel = "spring", uses = {ClientMapper.class, AdminMapper.class})
 public interface UserMapper {
   UserDto entityToDto(User user);
   User dtoToEntity(UserDto userDto);
