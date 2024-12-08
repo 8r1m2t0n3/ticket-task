@@ -40,6 +40,8 @@ public class ConcertTicket extends Ticket {
   private StadiumSector stadiumSector;
 
   @Column(name = "time")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   private LocalDateTime time;
 
   @Column(name = "is_promo")
@@ -55,4 +57,11 @@ public class ConcertTicket extends Ticket {
     this.time = time;
     this.isPromo = isPromo;
   }
+
+  @ToString.Include(name = "time")
+  @EqualsAndHashCode.Include
+  public LocalDateTime getTime() {
+    return time != null ? time.withNano(time.getNano() / 1000000 * 1000000) : null;
+  }
+
 }

@@ -25,7 +25,7 @@ public class TicketGenerator {
   public static BusTicket getRandomBusTicket() {
     BusTicket busTicket = new BusTicket();
 
-    busTicket.setPriceInUsd(BigDecimal.valueOf(RandomizerUtil.getRandomInt(10, 5000)));
+    busTicket.setPriceInUsd(BigDecimal.valueOf(((float) RandomizerUtil.getRandomInt(10, 1000)) / 100));
     busTicket.setTicketClass(RandomizerUtil.getRandomFromEnum(BusTicketClass.class));
     busTicket.setDuration(RandomizerUtil.getRandomFromEnum(BusTicketDuration.class));
 

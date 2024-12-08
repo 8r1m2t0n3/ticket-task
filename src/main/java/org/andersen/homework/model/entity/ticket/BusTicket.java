@@ -1,7 +1,5 @@
 package org.andersen.homework.model.entity.ticket;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -34,15 +32,15 @@ public class BusTicket extends Ticket {
   @Column(name = "start_date")
   private LocalDate startDate;
 
-  @JsonCreator
   @Builder
-  public BusTicket(@JsonProperty("ticketClass") BusTicketClass ticketClass,
-      @JsonProperty("ticketDuration") BusTicketDuration duration,
-      @JsonProperty("startDate") LocalDate startDate,
-      @JsonProperty("price") Float price) {
-    super(BigDecimal.valueOf(price));
+  public BusTicket(BusTicketClass ticketClass,
+                   BusTicketDuration duration,
+                   LocalDate startDate,
+                   BigDecimal price) {
+    super(price != null ? price : BigDecimal.ZERO);
     this.ticketClass = ticketClass;
     this.duration = duration;
     this.startDate = startDate;
   }
 }
+
