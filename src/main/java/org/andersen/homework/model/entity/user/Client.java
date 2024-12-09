@@ -12,7 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.andersen.homework.model.entity.ticket.Ticket;
+import org.andersen.homework.model.entity.ticket.BusTicket;
+import org.andersen.homework.model.entity.ticket.ConcertTicket;
 
 @Entity
 @DiscriminatorValue("CLIENT")
@@ -24,5 +25,8 @@ import org.andersen.homework.model.entity.ticket.Ticket;
 public class Client extends User {
 
   @OneToMany(mappedBy = "client", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = true)
-  private Set<Ticket> tickets = new HashSet<>();
+  private Set<BusTicket> busTickets = new HashSet<>();
+
+  @OneToMany(mappedBy = "client", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = true)
+  private Set<ConcertTicket> concertTickets = new HashSet<>();
 }

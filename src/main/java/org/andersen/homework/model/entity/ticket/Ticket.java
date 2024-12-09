@@ -14,12 +14,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Objects;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.andersen.homework.model.entity.user.Client;
 
 @Entity
@@ -30,17 +31,25 @@ import org.andersen.homework.model.entity.user.Client;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Ticket {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @EqualsAndHashCode.Include
+  @ToString.Include
   private UUID id;
 
   @ManyToOne
   @JoinColumn(name = "client_id", nullable = true)
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   private Client client;
 
   @Column(name = "price_in_usd")
+  @ToString.Include
+  @EqualsAndHashCode.Include
   private BigDecimal priceInUsd;
 
   public Ticket(BigDecimal priceInUsd) {
@@ -48,35 +57,15 @@ public class Ticket {
   }
 
   public void setPriceInUsd(BigDecimal priceInUsd) {
-    this.priceInUsd = priceInUsd.stripTrailingZeros().setScale(2, RoundingMode.DOWN);
+    this.priceInUsd = priceInUsd != null
+        ? priceInUsd.stripTrailingZeros().setScale(2, RoundingMode.DOWN)
+        : null;
   }
 
-  @Override
-  public String toString() {
-    return "Ticket{" +
-        "id=" + id +
-        ", client_id=" + (client != null ? client.getId() : null) +
-        ", priceInUsd=" + priceInUsd +
-        '}';
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Ticket ticket = (Ticket) o;
-
-    return Objects.equals(id, ticket.id) &&
-        Objects.equals(client != null ? client.getId() : null, ticket.client != null ? ticket.client.getId() : null) &&
-        Objects.equals(
-            priceInUsd != null ? priceInUsd.stripTrailingZeros().setScale(2, RoundingMode.DOWN) : null,
-            ticket.priceInUsd != null ? ticket.priceInUsd.stripTrailingZeros().setScale(2, RoundingMode.DOWN) : null);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id,
-        client != null ? client.getId() : null,
-        priceInUsd != null ? priceInUsd.stripTrailingZeros().setScale(2, RoundingMode.DOWN) : null);
+  @ToString.Include(name = "client_id")
+  @EqualsAndHashCode.Include
+  private UUID getClientId() {
+    return client != null ? client.getId() : null;
   }
 }
+
