@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.andersen.homework.model.dto.ticket.TicketIdOnlyDto;
+import org.andersen.homework.model.dto.ticket.bus.BusTicketDto;
+import org.andersen.homework.model.dto.ticket.concert.ConcertTicketDto;
 import org.andersen.homework.model.dto.user.client.ClientDto;
 import org.andersen.homework.model.dto.user.client.ClientSaveDto;
 import org.andersen.homework.model.dto.user.client.ClientUpdateDto;
@@ -64,13 +66,20 @@ public class ClientService {
   }
 
   private ClientDto addTicketsToClientDto(ClientDto clientDto, Set<Ticket> tickets) {
+    Set<ConcertTicketDto> concertTickets = new HashSet<>();
+    Set<BusTicketDto> busTickets = new HashSet<>();
+
     for (Ticket ticket : tickets) {
       if (ticket instanceof ConcertTicket concertTicket) {
-        clientDto.getConcertTickets().add(concertTicketMapper.entityToDto(concertTicket));
+        concertTickets.add(concertTicketMapper.entityToDto(concertTicket));
       } else if (ticket instanceof BusTicket busTicket) {
-        clientDto.getBusTickets().add(busTicketMapper.entityToDto(busTicket));
+        busTickets.add(busTicketMapper.entityToDto(busTicket));
       }
     }
+
+    clientDto.setConcertTickets(concertTickets);
+    clientDto.setBusTickets(busTickets);
+
     return clientDto;
   }
 
@@ -81,11 +90,11 @@ public class ClientService {
       for (TicketIdOnlyDto ticketIdOnlyDto : ticketIds) {
 
         Ticket ticket = ticketRepository.findById(ticketIdOnlyDto.getId())
-            .orElseThrow(() -> new RuntimeException("Ticket with id: %s not exist".formatted(ticketIdOnlyDto.getId())));
+            .orElseThrow(() -> new RuntimeException("Ticket with id: %s not found".formatted(ticketIdOnlyDto.getId())));
 
         if (ticket.getClient() != null && ticket.getClient().getId() != client.getId()) {
           throw new RuntimeException("Ticket with id: %s already bound with another client".formatted(ticket.getId()));
-        } else {
+        } else if (ticket.getClient() == null){
           ticket.setClient(client);
           ticketRepository.save(ticket);
           clientUpdatedTickets.add(ticket);
