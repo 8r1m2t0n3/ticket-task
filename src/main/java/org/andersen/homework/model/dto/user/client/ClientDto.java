@@ -12,6 +12,6 @@ import org.andersen.homework.model.dto.user.UserDto;
 @Setter
 @ToString(callSuper = true)
 public class ClientDto extends UserDto {
-  Set<ConcertTicketDto> concertTickets;
-  Set<BusTicketDto> busTickets;
+  private Set<ConcertTicketDto> concertTickets;
+  private Set<BusTicketDto> busTickets;
 }
