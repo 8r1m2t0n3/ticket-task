@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.andersen.homework.model.entity.ticket.BusTicket;
 import org.andersen.homework.model.entity.ticket.ConcertTicket;
 
@@ -19,6 +20,7 @@ import org.andersen.homework.model.entity.ticket.ConcertTicket;
 @DiscriminatorValue("CLIENT")
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)

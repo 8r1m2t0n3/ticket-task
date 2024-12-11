@@ -4,8 +4,10 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Entity
+@SuperBuilder
 @DiscriminatorValue("ADMIN")
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
