@@ -10,12 +10,12 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "\"user\"")
@@ -23,10 +23,10 @@ import lombok.ToString;
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
-@ToString
+@SuperBuilder
 @EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
+@ToString
 public class User {
 
   @Id
