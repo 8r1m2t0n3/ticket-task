@@ -7,7 +7,6 @@ import org.andersen.homework.model.dto.user.client.ClientUpdateDto;
 import org.andersen.homework.service.user.ClientService;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
@@ -20,29 +19,29 @@ public class ClientController {
   private final ClientService clientService;
 
   @GetMapping("/{id}")
-  public ResponseEntity<ClientDto> getClientById(@PathVariable UUID id) {
-    return new ResponseEntity<>(clientService.getById(id), HttpStatus.OK);
+  public ClientDto getClientById(@PathVariable UUID id) {
+    return clientService.getById(id);
   }
 
   @GetMapping
-  public ResponseEntity<List<ClientDto>> getAllClients() {
-    return new ResponseEntity<>(clientService.getAll(), HttpStatus.OK);
+  public List<ClientDto> getAllClients() {
+    return clientService.getAll();
   }
 
   @PostMapping
-  public ResponseEntity<ClientDto> saveClient(@RequestBody ClientSaveDto clientSaveDto) {
-    return new ResponseEntity<>(clientService.save(clientSaveDto), HttpStatus.CREATED);
+  @ResponseStatus(HttpStatus.CREATED)
+  public ClientDto saveClient(@RequestBody ClientSaveDto clientSaveDto) {
+    return clientService.save(clientSaveDto);
   }
 
   @PutMapping
-  public ResponseEntity<Void> updateClient(@RequestBody ClientUpdateDto clientUpdateDto) {
+  public void updateClient(@RequestBody ClientUpdateDto clientUpdateDto) {
     clientService.update(clientUpdateDto);
-    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteClientById(@PathVariable UUID id) {
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteClientById(@PathVariable UUID id) {
     clientService.deleteById(id);
-    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }
