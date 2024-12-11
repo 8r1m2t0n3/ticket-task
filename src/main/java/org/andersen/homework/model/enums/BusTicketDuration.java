@@ -4,5 +4,6 @@ public enum BusTicketDuration {
   DAY,
   WEEK,
   MONTH,
-  YEAR
+  YEAR,
+  PRIME
 }

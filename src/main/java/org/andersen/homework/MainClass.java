@@ -1,62 +1,22 @@
 package org.andersen.homework;
 
-
-import org.andersen.homework.model.entity.ticket.BusTicket;
-import org.andersen.homework.model.entity.ticket.ConcertTicket;
-import org.andersen.homework.model.entity.ticket.Ticket;
-import org.andersen.homework.model.entity.user.Admin;
-import org.andersen.homework.model.entity.user.Client;
-import org.andersen.homework.model.entity.user.User;
+import java.io.IOException;
+import org.andersen.homework.config.HibernateConfig;
 import org.andersen.homework.service.TicketService;
-import org.andersen.homework.service.UserService;
-import org.andersen.homework.util.TicketGenerator;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class MainClass {
 
-  private static final TicketService TICKET_SERVICE = new TicketService();
-  private static final UserService USER_SERVICE = new UserService();
-
   public static void main(String[] args) {
+    ApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
 
-    for (User user : USER_SERVICE.getAll()) {
-      USER_SERVICE.remove(user.getId());
+    TicketService ticketService = context.getBean(TicketService.class);
+
+    try {
+      System.out.println(ticketService.loadBusTickets());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
-    for (Ticket ticket : TICKET_SERVICE.getAll()) {
-      TICKET_SERVICE.remove(ticket.getId());
-    }
-
-    ConcertTicket concertTicket = TicketGenerator.getRandomConcertTicket();
-    BusTicket busTicket = TicketGenerator.getRandomBusTicket();
-
-    Ticket savedConcertTicket = TICKET_SERVICE.save(concertTicket);
-    Ticket savedBusTicket = TICKET_SERVICE.save(busTicket);
-
-    Client client = new Client();
-    client.setTicket(savedConcertTicket);
-
-    Admin admin = new Admin();
-
-    User savedClient = USER_SERVICE.save(client);
-    User savedAdmin = USER_SERVICE.save(admin);
-
-    System.out.println(USER_SERVICE.getById(savedClient.getId()));
-    System.out.println(savedConcertTicket);
-    System.out.println(TICKET_SERVICE.getById(savedConcertTicket.getId()));
-    System.out.println(TICKET_SERVICE.getByUserId(savedClient.getId()));
-
-    ((Client) savedClient).setTicket(savedBusTicket);
-    USER_SERVICE.update(savedClient.getId(), savedClient);
-
-    System.out.println(USER_SERVICE.getById(savedClient.getId()));
-
-    USER_SERVICE.remove(savedAdmin.getId());
-    System.out.println(USER_SERVICE.getById(savedAdmin.getId()));
-
-    System.out.println(USER_SERVICE.getAll());
-    System.out.println(TICKET_SERVICE.getAll());
-
-    savedConcertTicket.setClient((Client) savedClient);
-    TICKET_SERVICE.update(savedConcertTicket.getId(), savedConcertTicket);
-    System.out.println(TICKET_SERVICE.getById(savedConcertTicket.getId()));
   }
 }
