@@ -8,17 +8,21 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.andersen.homework.model.enums.StadiumSector;
 
 @Entity
 @DiscriminatorValue("CONCERT")
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
@@ -46,17 +50,6 @@ public class ConcertTicket extends Ticket {
 
   @Column(name = "is_promo")
   private Boolean isPromo;
-
-  public ConcertTicket(BigDecimal priceInUsd, String concertHallName, Short eventCode,
-                       Float backpackWeightInKg, StadiumSector stadiumSector, LocalDateTime time, Boolean isPromo) {
-    super(priceInUsd);
-    this.concertHallName = concertHallName;
-    this.eventCode = eventCode;
-    this.backpackWeightInKg = backpackWeightInKg;
-    this.stadiumSector = stadiumSector;
-    this.time = time;
-    this.isPromo = isPromo;
-  }
 
   @ToString.Include(name = "time")
   @EqualsAndHashCode.Include

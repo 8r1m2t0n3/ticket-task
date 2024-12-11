@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.andersen.homework.model.entity.user.Client;
 
 @Entity
@@ -29,8 +30,8 @@ import org.andersen.homework.model.entity.user.Client;
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Ticket {
@@ -52,7 +53,8 @@ public class Ticket {
   @EqualsAndHashCode.Include
   private BigDecimal priceInUsd;
 
-  public Ticket(BigDecimal priceInUsd) {
+  public Ticket(UUID id, BigDecimal priceInUsd) {
+    this.id = id;
     setPriceInUsd(priceInUsd);
   }
 
