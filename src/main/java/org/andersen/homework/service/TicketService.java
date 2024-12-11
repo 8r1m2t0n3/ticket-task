@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class TicketService {
 
+  private static final String PATH_TO_BUS_TICKETS_FILE = "/static/bus_tickets.json";
+
   private final TicketHibernateDao ticketDao;
 
   @Transactional
@@ -56,7 +58,7 @@ public class TicketService {
   }
 
   public List<BusTicket> loadBusTickets() throws IOException {
-    Resource resource = new ClassPathResource("/static/bus_tickets.json");
+    Resource resource = new ClassPathResource(PATH_TO_BUS_TICKETS_FILE);
 
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
