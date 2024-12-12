@@ -51,14 +51,17 @@ class ClientServiceUnitTest {
     UUID concertTicketId = UUID.randomUUID();
     UUID busTicketId = UUID.randomUUID();
 
+    ConcertTicket concertTicket = ConcertTicket.builder().id(concertTicketId).build();
+    ConcertTicketDto concertTicketDto = ConcertTicketDto.builder().id(concertTicketId).build();
+
+    BusTicket busTicket = BusTicket.builder().id(busTicketId).build();
+    BusTicketDto busTicketDto = BusTicketDto.builder().id(busTicketId).build();
+
     ClientSaveDto clientSaveDto = ClientSaveDto.builder()
         .tickets(Set.of(
             TicketIdOnlyDto.builder().id(concertTicketId).build(),
             TicketIdOnlyDto.builder().id(busTicketId).build()))
         .build();
-
-    ConcertTicket concertTicket = ConcertTicket.builder().id(concertTicketId).build();
-    BusTicket busTicket = BusTicket.builder().id(busTicketId).build();
 
     Client client = Client.builder()
         .concertTickets(Set.of(concertTicket))
@@ -71,9 +74,6 @@ class ClientServiceUnitTest {
         .concertTickets(Set.of(concertTicket))
         .busTickets(Set.of(busTicket))
         .build();
-
-    ConcertTicketDto concertTicketDto = ConcertTicketDto.builder().id(concertTicketId).build();
-    BusTicketDto busTicketDto = BusTicketDto.builder().id(busTicketId).build();
 
     ClientDto savedClientDto = ClientDto.builder()
         .id(savedClientId)
@@ -136,10 +136,9 @@ class ClientServiceUnitTest {
     UUID concertTicketId = UUID.randomUUID();
     TicketIdOnlyDto concertTicketIdOnlyDto = TicketIdOnlyDto.builder().id(concertTicketId).build();
 
-    ClientSaveDto clientSaveDto = ClientSaveDto.builder().tickets(Set.of(concertTicketIdOnlyDto)).build();
-
     UUID clientId = UUID.randomUUID();
     Client client = Client.builder().id(clientId).build();
+    ClientSaveDto clientSaveDto = ClientSaveDto.builder().tickets(Set.of(concertTicketIdOnlyDto)).build();
 
     ConcertTicket concertTicketWithClient = ConcertTicket.builder()
         .id(concertTicketId)
@@ -225,11 +224,10 @@ class ClientServiceUnitTest {
   void save_shouldThrowException_whenClientSaveDtoContainsTicketWithNonexistingId() {
     UUID nonexistingConcertTicketId = UUID.randomUUID();
     TicketIdOnlyDto concertTicketIdOnlyDto = TicketIdOnlyDto.builder().id(nonexistingConcertTicketId).build();
-    ClientSaveDto clientSaveDto = ClientSaveDto.builder().tickets(Set.of(concertTicketIdOnlyDto)).build();
-
 
     UUID clientId = UUID.randomUUID();
     Client client = Client.builder().id(clientId).build();
+    ClientSaveDto clientSaveDto = ClientSaveDto.builder().tickets(Set.of(concertTicketIdOnlyDto)).build();
 
     ConcertTicket concertTicket = ConcertTicket.builder()
         .id(nonexistingConcertTicketId)
