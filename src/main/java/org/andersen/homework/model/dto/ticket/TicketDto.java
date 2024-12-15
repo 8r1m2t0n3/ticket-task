@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.andersen.homework.model.dto.user.client.ClientIdOnlyDto;
 
 @Getter
 @Setter
@@ -16,6 +15,6 @@ import org.andersen.homework.model.dto.user.client.ClientIdOnlyDto;
 @ToString
 public class TicketDto {
   private UUID id;
-  private ClientIdOnlyDto client;
+  private UUID clientId;
   private BigDecimal priceInUsd;
 }

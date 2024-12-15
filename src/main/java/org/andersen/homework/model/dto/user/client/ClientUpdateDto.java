@@ -1,12 +1,12 @@
 package org.andersen.homework.model.dto.user.client;
 
 import java.util.Set;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.andersen.homework.model.dto.ticket.TicketIdOnlyDto;
 import org.andersen.homework.model.dto.user.UserUpdateDto;
 
 @Getter
@@ -15,5 +15,5 @@ import org.andersen.homework.model.dto.user.UserUpdateDto;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class ClientUpdateDto extends UserUpdateDto {
-  private Set<TicketIdOnlyDto> tickets;
+  private Set<UUID> ticketIds;
 }
