@@ -3,15 +3,13 @@ package org.andersen.homework.controller;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.andersen.homework.model.dto.user.admin.AdminDto;
-import org.andersen.homework.model.dto.user.admin.AdminSaveDto;
+import org.andersen.homework.model.dto.user.UserDto;
 import org.andersen.homework.service.user.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,8 +23,8 @@ public class AdminController {
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
-  public AdminDto saveAdmin(@RequestBody AdminSaveDto adminSaveDto) {
-    return adminService.save(adminSaveDto);
+  public UserDto saveAdmin() {
+    return adminService.save();
   }
 
   @DeleteMapping("/{id}")
@@ -36,12 +34,12 @@ public class AdminController {
   }
 
   @GetMapping("/{id}")
-  public AdminDto getAdminById(@PathVariable UUID id) {
+  public UserDto getAdminById(@PathVariable UUID id) {
     return adminService.getById(id);
   }
 
   @GetMapping
-  public List<AdminDto> getAllAdmins() {
+  public List<UserDto> getAllAdmins() {
     return adminService.getAll();
   }
 }

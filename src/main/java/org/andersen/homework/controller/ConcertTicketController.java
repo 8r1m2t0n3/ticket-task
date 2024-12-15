@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.andersen.homework.model.dto.ticket.concert.ConcertTicketDto;
-import org.andersen.homework.model.dto.ticket.concert.ConcertTicketSaveDto;
 import org.andersen.homework.model.dto.ticket.concert.ConcertTicketUpdateDto;
 import org.andersen.homework.service.ticket.ConcertTicketService;
 import org.springframework.http.HttpStatus;
@@ -43,7 +42,7 @@ public class ConcertTicketController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ConcertTicketDto saveTicket(@RequestBody ConcertTicketSaveDto ticketSaveDto) {
+  public ConcertTicketDto saveTicket(@RequestBody ConcertTicketUpdateDto ticketSaveDto) {
     return concertTicketService.save(ticketSaveDto);
   }
 

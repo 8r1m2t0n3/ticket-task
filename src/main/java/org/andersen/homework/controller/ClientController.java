@@ -2,7 +2,6 @@ package org.andersen.homework.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.andersen.homework.model.dto.user.client.ClientDto;
-import org.andersen.homework.model.dto.user.client.ClientSaveDto;
 import org.andersen.homework.model.dto.user.client.ClientUpdateDto;
 import org.andersen.homework.service.user.ClientService;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,8 +29,8 @@ public class ClientController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ClientDto saveClient(@RequestBody ClientSaveDto clientSaveDto) {
-    return clientService.save(clientSaveDto);
+  public ClientDto saveClient(@RequestBody ClientUpdateDto clientUpdateDto) {
+    return clientService.save(clientUpdateDto);
   }
 
   @PutMapping
