@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.andersen.homework.model.dto.ticket.TicketIdOnlyDto;
 import org.andersen.homework.model.dto.ticket.bus.BusTicketDto;
 import org.andersen.homework.model.dto.ticket.concert.ConcertTicketDto;
 import org.andersen.homework.model.dto.user.client.ClientDto;
-import org.andersen.homework.model.dto.user.client.ClientSaveDto;
 import org.andersen.homework.model.dto.user.client.ClientUpdateDto;
 import org.andersen.homework.model.entity.ticket.BusTicket;
 import org.andersen.homework.model.entity.ticket.ConcertTicket;
@@ -35,17 +33,17 @@ public class ClientService {
   private final BusTicketMapper busTicketMapper;
 
   @Transactional
-  public ClientDto save(ClientSaveDto clientSaveDto) {
-    Client savedClient = userRepository.save(clientMapper.saveDtoToEntity(clientSaveDto));
+  public ClientDto save(ClientUpdateDto clientUpdateDto) {
+    Client savedClient = userRepository.save(clientMapper.updateDtoToEntity(clientUpdateDto));
 
     return addTicketsToClientDto(
         clientMapper.entityToDto(savedClient),
-        updateClientTickets(savedClient, clientSaveDto.getTickets()));
+        updateClientTickets(savedClient, clientUpdateDto.getTicketIds()));
   }
 
   @Transactional
   public void update(ClientUpdateDto clientUpdateDto) {
-    updateClientTickets(getClientById(clientUpdateDto.getId()), clientUpdateDto.getTickets());
+    updateClientTickets(getClientById(clientUpdateDto.getId()), clientUpdateDto.getTicketIds());
   }
 
   @Transactional
@@ -83,14 +81,14 @@ public class ClientService {
     return clientDto;
   }
 
-  private Set<Ticket> updateClientTickets(Client client, Set<TicketIdOnlyDto> ticketIds) {
+  private Set<Ticket> updateClientTickets(Client client, Set<UUID> ticketIds) {
     Set<Ticket> clientUpdatedTickets = new HashSet<>();
 
     if (ticketIds != null) {
-      for (TicketIdOnlyDto ticketIdOnlyDto : ticketIds) {
+      for (UUID ticketId : ticketIds) {
 
-        Ticket ticket = ticketRepository.findById(ticketIdOnlyDto.getId())
-            .orElseThrow(() -> new RuntimeException("Ticket with id: %s not found".formatted(ticketIdOnlyDto.getId())));
+        Ticket ticket = ticketRepository.findById(ticketId)
+            .orElseThrow(() -> new RuntimeException("Ticket with id: %s not found".formatted(ticketId)));
 
         if (ticket.getClient() != null && ticket.getClient().getId() != client.getId()) {
           throw new RuntimeException("Ticket with id: %s already bound with another client".formatted(ticket.getId()));

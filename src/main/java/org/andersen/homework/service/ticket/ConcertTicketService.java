@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.andersen.homework.model.dto.ticket.concert.ConcertTicketDto;
-import org.andersen.homework.model.dto.ticket.concert.ConcertTicketSaveDto;
 import org.andersen.homework.model.dto.ticket.concert.ConcertTicketUpdateDto;
 import org.andersen.homework.repository.ConcertTicketJpaRepository;
 import org.andersen.homework.util.mapper.ticket.ConcertTicketMapper;
@@ -20,9 +19,9 @@ public class ConcertTicketService {
   private final ConcertTicketMapper concertTicketMapper;
 
   @Transactional
-  public ConcertTicketDto save(ConcertTicketSaveDto ticketSaveDto) {
+  public ConcertTicketDto save(ConcertTicketUpdateDto ticketUpdateDto) {
     return concertTicketMapper.entityToDto(concertTicketRepository.save(
-        concertTicketMapper.saveDtoToEntity(ticketSaveDto)));
+        concertTicketMapper.updateDtoToEntity(ticketUpdateDto)));
   }
 
   @Transactional

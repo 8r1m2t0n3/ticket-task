@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.andersen.homework.model.dto.ticket.bus.BusTicketDto;
-import org.andersen.homework.model.dto.ticket.bus.BusTicketSaveDto;
 import org.andersen.homework.model.dto.ticket.bus.BusTicketUpdateDto;
 import org.andersen.homework.repository.BusTicketJpaRepository;
 import org.andersen.homework.util.mapper.ticket.BusTicketMapper;
@@ -20,9 +19,9 @@ public class BusTicketService {
   private final BusTicketMapper busTicketMapper;
 
   @Transactional
-  public BusTicketDto save(BusTicketSaveDto busTicketSaveDto) {
+  public BusTicketDto save(BusTicketUpdateDto busTicketUpdateDto) {
     return busTicketMapper.entityToDto(busTicketRepository.save(
-        busTicketMapper.saveDtoToEntity(busTicketSaveDto)));
+        busTicketMapper.updateDtoToEntity(busTicketUpdateDto)));
   }
 
   @Transactional
