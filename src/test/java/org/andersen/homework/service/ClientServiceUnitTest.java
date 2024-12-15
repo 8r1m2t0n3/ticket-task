@@ -4,12 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import org.andersen.homework.model.dto.ticket.TicketIdOnlyDto;
 import org.andersen.homework.model.dto.ticket.bus.BusTicketDto;
 import org.andersen.homework.model.dto.ticket.concert.ConcertTicketDto;
 import org.andersen.homework.model.dto.user.client.ClientDto;
-import org.andersen.homework.model.dto.user.client.ClientIdOnlyDto;
-import org.andersen.homework.model.dto.user.client.ClientSaveDto;
 import org.andersen.homework.model.dto.user.client.ClientUpdateDto;
 import org.andersen.homework.model.entity.ticket.BusTicket;
 import org.andersen.homework.model.entity.ticket.ConcertTicket;
@@ -47,7 +44,7 @@ class ClientServiceUnitTest {
   ClientService clientService;
 
   @Test
-  void save_shouldSaveClientAndUpdateTickets_whenClientSaveDtoContainsUnboundAndExistingTickets() {
+  void save_shouldSaveClientAndUpdateTickets_whenClientUpdateDtoContainsUnboundAndExistingTickets() {
     UUID concertTicketId = UUID.randomUUID();
     UUID busTicketId = UUID.randomUUID();
 
@@ -57,10 +54,8 @@ class ClientServiceUnitTest {
     BusTicket busTicket = BusTicket.builder().id(busTicketId).build();
     BusTicketDto busTicketDto = BusTicketDto.builder().id(busTicketId).build();
 
-    ClientSaveDto clientSaveDto = ClientSaveDto.builder()
-        .tickets(Set.of(
-            TicketIdOnlyDto.builder().id(concertTicketId).build(),
-            TicketIdOnlyDto.builder().id(busTicketId).build()))
+    ClientUpdateDto clientUpdateDto = ClientUpdateDto.builder()
+        .ticketIds(Set.of(concertTicketId, busTicketId))
         .build();
 
     Client client = Client.builder()
@@ -81,7 +76,7 @@ class ClientServiceUnitTest {
         .busTickets(Set.of(busTicketDto))
         .build();
 
-    Mockito.when(clientMapper.saveDtoToEntity(clientSaveDto)).thenReturn(client);
+    Mockito.when(clientMapper.updateDtoToEntity(clientUpdateDto)).thenReturn(client);
 
     Mockito.when(userRepository.save(client)).thenReturn(savedClient);
 
@@ -96,7 +91,7 @@ class ClientServiceUnitTest {
     Mockito.when(concertTicketMapper.entityToDto(concertTicket)).thenReturn(concertTicketDto);
     Mockito.when(busTicketMapper.entityToDto(busTicket)).thenReturn(busTicketDto);
 
-    ClientDto result = clientService.save(clientSaveDto);
+    ClientDto result = clientService.save(clientUpdateDto);
     Assertions.assertEquals(result, savedClientDto);
 
     Mockito.verify(ticketRepository).findById(concertTicketId);
@@ -110,8 +105,8 @@ class ClientServiceUnitTest {
   }
 
   @Test
-  void save_shouldSaveClient_whenClientSaveDtoContainsNoTickets() {
-    ClientSaveDto clientSaveDto = new ClientSaveDto();
+  void save_shouldSaveClient_whenClientUpdateDtoContainsNoTickets() {
+    ClientUpdateDto clientUpdateDto = new ClientUpdateDto();
     Client client = new Client();
 
     UUID savedClientId = UUID.randomUUID();
@@ -119,11 +114,11 @@ class ClientServiceUnitTest {
 
     ClientDto savedClientDto = ClientDto.builder().id(savedClientId).build();
 
-    Mockito.when(clientMapper.saveDtoToEntity(clientSaveDto)).thenReturn(client);
+    Mockito.when(clientMapper.updateDtoToEntity(clientUpdateDto)).thenReturn(client);
     Mockito.when(userRepository.save(client)).thenReturn(savedClient);
     Mockito.when(clientMapper.entityToDto(savedClient)).thenReturn(savedClientDto);
 
-    ClientDto result = clientService.save(clientSaveDto);
+    ClientDto result = clientService.save(clientUpdateDto);
     Assertions.assertEquals(result, savedClientDto);
 
     Mockito.verifyNoInteractions(ticketRepository);
@@ -132,13 +127,12 @@ class ClientServiceUnitTest {
   }
 
   @Test
-  void save_shouldSaveClient_whenClientSaveDtoContainsExistingAndBoundOnClientTicket() {
+  void save_shouldSaveClient_whenClientUpdateDtoContainsExistingAndBoundOnClientTicket() {
     UUID concertTicketId = UUID.randomUUID();
-    TicketIdOnlyDto concertTicketIdOnlyDto = TicketIdOnlyDto.builder().id(concertTicketId).build();
 
     UUID clientId = UUID.randomUUID();
     Client client = Client.builder().id(clientId).build();
-    ClientSaveDto clientSaveDto = ClientSaveDto.builder().tickets(Set.of(concertTicketIdOnlyDto)).build();
+    ClientUpdateDto clientUpdateDto = ClientUpdateDto.builder().ticketIds(Set.of(concertTicketId)).build();
 
     ConcertTicket concertTicketWithClient = ConcertTicket.builder()
         .id(concertTicketId)
@@ -152,11 +146,9 @@ class ClientServiceUnitTest {
         .concertTickets(Set.of(concertTicketWithClient))
         .build();
 
-    ClientIdOnlyDto clientIdOnlyDto = ClientIdOnlyDto.builder().id(clientId).build();
-
     ConcertTicketDto concertTicketWithClientDto = ConcertTicketDto.builder()
         .id(concertTicketId)
-        .client(clientIdOnlyDto)
+        .clientId(clientId)
         .build();
 
     ClientDto savedClientDto = ClientDto.builder()
@@ -164,12 +156,12 @@ class ClientServiceUnitTest {
         .concertTickets(Set.of(concertTicketWithClientDto))
         .build();
 
-    Mockito.when(clientMapper.saveDtoToEntity(clientSaveDto)).thenReturn(client);
+    Mockito.when(clientMapper.updateDtoToEntity(clientUpdateDto)).thenReturn(client);
     Mockito.when(userRepository.save(client)).thenReturn(savedClient);
     Mockito.when(clientMapper.entityToDto(savedClient)).thenReturn(savedClientDto);
     Mockito.when(ticketRepository.findById(concertTicketId)).thenReturn(Optional.of(concertTicketWithClient));
 
-    ClientDto result = clientService.save(clientSaveDto);
+    ClientDto result = clientService.save(clientUpdateDto);
     Assertions.assertEquals(result, savedClientDto);
 
     Mockito.verify(ticketRepository).findById(concertTicketId);
@@ -178,20 +170,18 @@ class ClientServiceUnitTest {
   }
 
   @Test
-  void save_shouldThrowException_whenClientSaveDtoContainsExistingAndBoundOnAnotherClientTicket() {
+  void save_shouldThrowException_whenClientUpdateDtoContainsExistingAndBoundOnAnotherClientTicket() {
     UUID anotherClientId = UUID.randomUUID();
     Client anotherClient = Client.builder().id(anotherClientId).build();
 
     UUID concertTicketId = UUID.randomUUID();
-    TicketIdOnlyDto concertTicketIdOnlyDto = TicketIdOnlyDto.builder().id(concertTicketId).build();
     ConcertTicket concertTicketWithAnotherClient = ConcertTicket.builder()
         .id(concertTicketId)
         .client(anotherClient)
         .build();
 
     Client client = Client.builder().concertTickets(Set.of(concertTicketWithAnotherClient)).build();
-    ClientIdOnlyDto clientIdOnlyDto = ClientIdOnlyDto.builder().id(anotherClientId).build();
-    ClientSaveDto clientSaveDto = ClientSaveDto.builder().tickets(Set.of(concertTicketIdOnlyDto)).build();
+    ClientUpdateDto clientUpdateDto = ClientUpdateDto.builder().ticketIds(Set.of(concertTicketId)).build();
 
     UUID savedClientId = UUID.randomUUID();
     Client savedClient = Client.builder()
@@ -201,7 +191,7 @@ class ClientServiceUnitTest {
 
     ConcertTicketDto concertTicketWithClientDto = ConcertTicketDto.builder()
         .id(concertTicketId)
-        .client(clientIdOnlyDto)
+        .clientId(anotherClientId)
         .build();
 
     ClientDto savedClientDto = ClientDto.builder()
@@ -209,25 +199,24 @@ class ClientServiceUnitTest {
         .concertTickets(Set.of(concertTicketWithClientDto))
         .build();
 
-    Mockito.when(clientMapper.saveDtoToEntity(clientSaveDto)).thenReturn(client);
+    Mockito.when(clientMapper.updateDtoToEntity(clientUpdateDto)).thenReturn(client);
     Mockito.when(userRepository.save(client)).thenReturn(savedClient);
     Mockito.when(clientMapper.entityToDto(savedClient)).thenReturn(savedClientDto);
     Mockito.when(ticketRepository.findById(concertTicketId)).thenReturn(Optional.of(concertTicketWithAnotherClient));
 
-    Assertions.assertThrows(RuntimeException.class, () -> clientService.save(clientSaveDto));
+    Assertions.assertThrows(RuntimeException.class, () -> clientService.save(clientUpdateDto));
 
     Mockito.verify(ticketRepository).findById(concertTicketId);
     Mockito.verify(ticketRepository, Mockito.never()).save(Mockito.any(ConcertTicket.class));
   }
 
   @Test
-  void save_shouldThrowException_whenClientSaveDtoContainsTicketWithNonexistingId() {
+  void save_shouldThrowException_whenClientUpdateDtoContainsTicketWithNonexistingId() {
     UUID nonexistingConcertTicketId = UUID.randomUUID();
-    TicketIdOnlyDto concertTicketIdOnlyDto = TicketIdOnlyDto.builder().id(nonexistingConcertTicketId).build();
 
     UUID clientId = UUID.randomUUID();
     Client client = Client.builder().id(clientId).build();
-    ClientSaveDto clientSaveDto = ClientSaveDto.builder().tickets(Set.of(concertTicketIdOnlyDto)).build();
+    ClientUpdateDto clientUpdateDto = ClientUpdateDto.builder().ticketIds(Set.of(nonexistingConcertTicketId)).build();
 
     ConcertTicket concertTicket = ConcertTicket.builder()
         .id(nonexistingConcertTicketId)
@@ -242,11 +231,9 @@ class ClientServiceUnitTest {
         .concertTickets(Set.of(concertTicket))
         .build();
 
-    ClientIdOnlyDto clientIdOnlyDto = ClientIdOnlyDto.builder().id(clientId).build();
-
     ConcertTicketDto concertTicketDto = ConcertTicketDto.builder()
         .id(nonexistingConcertTicketId)
-        .client(clientIdOnlyDto)
+        .clientId(clientId)
         .build();
 
     ClientDto savedClientDto = ClientDto.builder()
@@ -254,12 +241,12 @@ class ClientServiceUnitTest {
         .concertTickets(Set.of(concertTicketDto))
         .build();
 
-    Mockito.when(clientMapper.saveDtoToEntity(clientSaveDto)).thenReturn(client);
+    Mockito.when(clientMapper.updateDtoToEntity(clientUpdateDto)).thenReturn(client);
     Mockito.when(userRepository.save(client)).thenReturn(savedClient);
     Mockito.when(clientMapper.entityToDto(savedClient)).thenReturn(savedClientDto);
     Mockito.when(ticketRepository.findById(nonexistingConcertTicketId)).thenReturn(Optional.empty());
 
-    Assertions.assertThrows(RuntimeException.class, () -> clientService.save(clientSaveDto));
+    Assertions.assertThrows(RuntimeException.class, () -> clientService.save(clientUpdateDto));
 
     Mockito.verify(ticketRepository).findById(nonexistingConcertTicketId);
     Mockito.verify(ticketRepository, Mockito.never()).save(Mockito.any(ConcertTicket.class));
@@ -269,17 +256,15 @@ class ClientServiceUnitTest {
   void update_shouldUpdateClientAndUpdateTickets_whenUserExistsByIdAndIsInstanceOfClientClassAndClientUpdateDtoContainsUnboundAndExistingTickets() {
     UUID concertTicketId = UUID.randomUUID();
     ConcertTicket concertTicket = ConcertTicket.builder().id(concertTicketId).build();
-    TicketIdOnlyDto concertTicketIdOnlyDto = TicketIdOnlyDto.builder().id(concertTicketId).build();
 
     UUID busTicketId = UUID.randomUUID();
     BusTicket busTicket = BusTicket.builder().id(busTicketId).build();
-    TicketIdOnlyDto busTicketIdOnlyDto = TicketIdOnlyDto.builder().id(busTicketId).build();
 
     UUID userId = UUID.randomUUID();
     Client client = Client.builder().id(userId).build();
     ClientUpdateDto clientUpdateDto = ClientUpdateDto.builder()
         .id(userId)
-        .tickets(Set.of(concertTicketIdOnlyDto, busTicketIdOnlyDto))
+        .ticketIds(Set.of(concertTicketId, busTicketId))
         .build();
 
     Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(client));
@@ -322,13 +307,12 @@ class ClientServiceUnitTest {
   void update_shouldThrowException_whenUserExistsByIdAndIsInstanceOfClientClassAndClientUpdateDtoContainsNonexistingTicket() {
     UUID nonexistingConcertTicketId = UUID.randomUUID();
     ConcertTicket nonexistingConcertTicket = ConcertTicket.builder().id(nonexistingConcertTicketId).build();
-    TicketIdOnlyDto nonexistingConcertTicketIdOnlyDto = TicketIdOnlyDto.builder().id(nonexistingConcertTicketId).build();
 
     UUID userId = UUID.randomUUID();
     Client client = Client.builder().id(userId).build();
     ClientUpdateDto clientUpdateDto = ClientUpdateDto.builder()
         .id(userId)
-        .tickets(Set.of(nonexistingConcertTicketIdOnlyDto))
+        .ticketIds(Set.of(nonexistingConcertTicketId))
         .build();
 
     Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(client));
@@ -350,14 +334,11 @@ class ClientServiceUnitTest {
         .client(anotherClient)
         .build();
 
-    TicketIdOnlyDto concertTicketIdOnlyDto = TicketIdOnlyDto.builder().id(concertTicketId).build();
-    concertTicketIdOnlyDto.setId(concertTicketId);
-
     UUID userId = UUID.randomUUID();
     Client client = Client.builder().id(userId).build();
     ClientUpdateDto clientUpdateDto = ClientUpdateDto.builder()
         .id(userId)
-        .tickets(Set.of(concertTicketIdOnlyDto))
+        .ticketIds(Set.of(concertTicketId))
         .build();
 
     Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(client));
@@ -380,9 +361,7 @@ class ClientServiceUnitTest {
         .client(client)
         .build();
 
-    TicketIdOnlyDto concertTicketIdOnlyDto = TicketIdOnlyDto.builder().id(concertTicketId).build();
-
-    clientUpdateDto.setTickets(Set.of(concertTicketIdOnlyDto));
+    clientUpdateDto.setTicketIds(Set.of(concertTicketId));
 
     Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(client));
     Mockito.when(ticketRepository.findById(concertTicketId)).thenReturn(Optional.of(concertTicket));
