@@ -44,7 +44,7 @@ class ClientServiceUnitTest {
   ClientService clientService;
 
   @Test
-  void save_shouldSaveClientAndUpdateTickets_whenClientUpdateDtoContainsUnboundAndExistingTickets() {
+  void save_shouldSaveClientAndUpdateTickets_whenTicketsAreUnboundAndExisting() {
     UUID concertTicketId = UUID.randomUUID();
     UUID busTicketId = UUID.randomUUID();
 
@@ -105,7 +105,7 @@ class ClientServiceUnitTest {
   }
 
   @Test
-  void save_shouldSaveClient_whenClientUpdateDtoContainsNoTickets() {
+  void save_shouldSaveClient_whenTicketsListIsEmpty() {
     ClientUpdateDto clientUpdateDto = new ClientUpdateDto();
     Client client = new Client();
 
@@ -127,7 +127,7 @@ class ClientServiceUnitTest {
   }
 
   @Test
-  void save_shouldSaveClient_whenClientUpdateDtoContainsExistingAndBoundOnClientTicket() {
+  void save_shouldSaveClient_whenTicketExistsAndBoundOnClient() {
     UUID concertTicketId = UUID.randomUUID();
 
     UUID clientId = UUID.randomUUID();
@@ -170,7 +170,7 @@ class ClientServiceUnitTest {
   }
 
   @Test
-  void save_shouldThrowException_whenClientUpdateDtoContainsExistingAndBoundOnAnotherClientTicket() {
+  void save_shouldThrowException_whenTicketExistsAndBoundOnAnotherClient() {
     UUID anotherClientId = UUID.randomUUID();
     Client anotherClient = Client.builder().id(anotherClientId).build();
 
@@ -211,7 +211,7 @@ class ClientServiceUnitTest {
   }
 
   @Test
-  void save_shouldThrowException_whenClientUpdateDtoContainsTicketWithNonexistingId() {
+  void save_shouldThrowException_whenTicketHasNonexistingId() {
     UUID nonexistingConcertTicketId = UUID.randomUUID();
 
     UUID clientId = UUID.randomUUID();
@@ -253,7 +253,7 @@ class ClientServiceUnitTest {
   }
 
   @Test
-  void update_shouldUpdateClientAndUpdateTickets_whenUserExistsByIdAndIsInstanceOfClientClassAndClientUpdateDtoContainsUnboundAndExistingTickets() {
+  void update_shouldUpdateClientAndUpdateTickets_whenUserExistsByIdAndIsInstanceOfClientClassAndTicketsAreUnboundAndExisting() {
     UUID concertTicketId = UUID.randomUUID();
     ConcertTicket concertTicket = ConcertTicket.builder().id(concertTicketId).build();
 
@@ -304,7 +304,7 @@ class ClientServiceUnitTest {
   }
 
   @Test
-  void update_shouldThrowException_whenUserExistsByIdAndIsInstanceOfClientClassAndClientUpdateDtoContainsNonexistingTicket() {
+  void update_shouldThrowException_whenUserExistsByIdAndIsInstanceOfClientClassAndTicketNotExists() {
     UUID nonexistingConcertTicketId = UUID.randomUUID();
     ConcertTicket nonexistingConcertTicket = ConcertTicket.builder().id(nonexistingConcertTicketId).build();
 
@@ -324,7 +324,7 @@ class ClientServiceUnitTest {
   }
 
   @Test
-  void update_shouldThrowException_whenUserExistsByIdAndIsInstanceOfClientClassAndClientUpdateDtoContainsExistingAndBoundOnAnotherClientTicket() {
+  void update_shouldThrowException_whenUserExistsByIdAndIsInstanceOfClientClassAndTicketExistsAndBoundOnAnotherClient() {
     UUID anotherClientId = UUID.randomUUID();
     Client anotherClient = Client.builder().id(anotherClientId).build();
 
@@ -350,7 +350,7 @@ class ClientServiceUnitTest {
   }
 
   @Test
-  void update_shouldUpdateClient_whenUserExistsByIdAndIsInstanceOfClientClassAndClientUpdateDtoContainsExistingAndBoundOnClientTicket() {
+  void update_shouldUpdateClient_whenUserExistsByIdAndIsInstanceOfClientClassAndTicketExistsAndBoundOnClient() {
     UUID userId = UUID.randomUUID();
     Client client = Client.builder().id(userId).build();
     ClientUpdateDto clientUpdateDto = ClientUpdateDto.builder().id(userId).build();
